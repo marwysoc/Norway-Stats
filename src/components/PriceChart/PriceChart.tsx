@@ -16,16 +16,18 @@ import { v4 as uuidv4 } from 'uuid'
 
 import SnackBar from '../SnackBar/SnackBar'
 
+interface DataSet {
+    label: string;
+    data?: number[];
+    backgroundColor: string[];
+}
+
 interface SavedStat {
     id: any;
-    houseType: string | undefined;
+    houseType?: string;
     chartData: {
-        labels: string[] | undefined;
-        datasets: {
-            label: string;
-            data: number[] | undefined;
-            backgroundColor: string[];
-        }[];
+        labels?: string[];
+        datasets: DataSet[];
     },
     options: ChartOptions,
     comment?: string
@@ -57,7 +59,7 @@ ChartJS.register(
 export const PriceChart: React.FC<ChartProps> = React.memo(function PriceChart(props) {
     const [savedStats, setSavedStats] = useState<SavedStat[]>(() => JSON.parse(localStorage.getItem('savedStats') || '[]') || [])
     const [showSnackBar, setShowSnackbar] = useState<boolean>(false);
-    const [disabled, setDisabled]= useState<boolean>(false)
+    const [disabled, setDisabled] = useState<boolean>(false)
 
     useEffect(() => {
         localStorage.setItem('savedStats', JSON.stringify(savedStats))
@@ -109,7 +111,7 @@ export const PriceChart: React.FC<ChartProps> = React.memo(function PriceChart(p
         setSavedStats((prevStats) => [...prevStats, saveStat])
         setTimeout(() => {
             setShowSnackbar(false)
-          }, 1500)
+        }, 1500)
     }
 
     return (
