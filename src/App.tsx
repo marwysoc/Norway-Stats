@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 
 import { PageForm } from './modules/PropertyForm'
 import { PageChart } from './modules/PriceChart'
-import PageLibrary from './pages/PageLibrary/PageLibrary'
+import { PageLibrary } from './modules/Library'
 
 import { Loader, Error } from './components/UI'
 import { Header } from './components/Header'

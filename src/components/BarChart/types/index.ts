@@ -17,7 +17,7 @@ export interface SavedStat {
     chartData: ChartData;
     options: ChartOptions;
     comment?: string;
-};
+}
 
 export interface ChartProps {
     labels?: string[];
