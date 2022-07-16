@@ -1,18 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Box } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { quarterSet, houses } from '../../consts'
-import { query } from '../../api/queryString'
+import { quarterSet, houses } from '../../../consts'
+import { query } from '../../../api/queryString'
 import { useEffect, useState } from 'react'
-import { Loader, Error } from '../../components/UI'
+import { Loader, Error } from '../../../components/UI'
 import axios from 'axios'
 
-import { BarChart } from '../../components/BarChart'
-
-interface ChartProps {
-    labels: string[] | undefined;
-    dataSet: number[] | undefined;
-}
+import { BarChart } from '../../../components/BarChart'
+import { ChartProps } from '../'
 
 export const PageChart: React.FC<ChartProps> = (props) => {
     const { start, end, house } = useParams();
