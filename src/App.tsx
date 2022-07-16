@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 
-import PageForm from './pages/PageForm/PageForm'
+import { PageForm } from './modules/PropertyForm'
 import PageLibrary from './pages/PageLibrary/PageLibrary'
 import PageChart from './pages/PageChart/PageChart'
 
@@ -16,12 +16,12 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-      <Header/>
+      <Header />
       <Routes>
         <Route
           path={'*'}
           element={
-            <PageForm onClickSubmit={onClickSubmitHandler} />
+            <PageForm onSubmit={onClickSubmitHandler} />
           }
         />
         <Route

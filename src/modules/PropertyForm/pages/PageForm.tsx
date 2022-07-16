@@ -1,17 +1,12 @@
 import React from 'react'
-
 import { useForm, FormProvider } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import Button from '@mui/material/Button';
 
-import { Box } from '@mui/material'
-import RangeForm from '../../components/RangeForm/RangeForm'
+import { Box, Button } from '@mui/material'
 
-interface PageFormProps {
-  onClickSubmit: (data: any) => void
-}
+import { PropertyForm, PropertyFormProps} from '../'
 
-export const PageForm: React.FC<PageFormProps> = (props) => {
+export const PageForm: React.FC<PropertyFormProps> = (props) => {
 
   const methods = useForm()
   const { handleSubmit } = methods
@@ -30,8 +25,8 @@ export const PageForm: React.FC<PageFormProps> = (props) => {
       <FormProvider
         {...methods}
       >
-        <RangeForm
-          onSubmit={handleSubmit((data) => props.onClickSubmit(data))}
+        <PropertyForm
+          onSubmit={handleSubmit((data) => props.onSubmit(data))}
         />
       </FormProvider>
 

@@ -1,20 +1,17 @@
 import React from 'react'
-
-import { Box, Button, Typography } from '@mui/material'
-
 import { useFormContext } from 'react-hook-form'
 
-import { Input } from '../UI'
+import { Box, Button } from '@mui/material'
+
+import { Input } from '../../components/UI'
+import { DescribeText, InputDescriber } from './components'
 
 import { quarters, years, houses } from '../../consts'
 
-interface RangeFormProps {
-  onSubmit: any
-}
+import { PropertyFormProps } from '.'
 
-export const QuarterForm: React.FC<RangeFormProps> = (props) => {
+export const PropertyForm: React.FC<PropertyFormProps> = (props) => {
   const {
-    onSubmit,
     ...otherProps
   } = props
 
@@ -67,16 +64,9 @@ export const QuarterForm: React.FC<RangeFormProps> = (props) => {
       }}
       {...otherProps}
     >
-      <Typography variant='h3' component='div'>
-        Welcome to Norawy Stats
-      </Typography>
-      <Typography sx={{ marginBottom: 2 }} variant='subtitle1' gutterBottom component='div'>
-        Select range to get statistics
-      </Typography>
+      <DescribeText primaryTxt={'Welcome to Norawy Stats'} secondaryTxt={'Select range to get statistics'} />
       <form onSubmit={props.onSubmit}>
-        <Typography variant='button' gutterBottom component='div' sx={{ fontWeight: 'bold' }}>
-          Start quarter
-        </Typography>
+        <InputDescriber describerTxt={'Start quarter'}/>
         <Input
           label={'Start year'}
           errorMessage={errors.startYear && errors.startYear.message}
@@ -89,9 +79,7 @@ export const QuarterForm: React.FC<RangeFormProps> = (props) => {
           options={quarters}
           {...registerStartQuarter}
         />
-        <Typography variant='button' gutterBottom component='div' sx={{ fontWeight: 'bold' }}>
-          End quarter
-        </Typography>
+        <InputDescriber describerTxt={'End quarter'}/>
         <Input
           label={'End year'}
           errorMessage={errors.endYear && errors.endYear.message}
@@ -104,9 +92,7 @@ export const QuarterForm: React.FC<RangeFormProps> = (props) => {
           options={quarters}
           {...registerEndQuarter}
         />
-        <Typography variant='button' gutterBottom component='div' sx={{ fontWeight: 'bold' }}>
-          House Type
-        </Typography>
+        <InputDescriber describerTxt={'House Type'}/>
         <Input
           label={'House type'}
           errorMessage={errors.houseType && errors.houseType.message}
@@ -130,4 +116,4 @@ export const QuarterForm: React.FC<RangeFormProps> = (props) => {
   )
 }
 
-export default QuarterForm
+export default PropertyForm
