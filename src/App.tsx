@@ -5,8 +5,7 @@ import DrawerAppBar from './components/AppBar/AppBar'
 import PageForm from './pages/PageForm/PageForm'
 import PageLibrary from './pages/PageLibrary/PageLibrary'
 import PageChart from './pages/PageChart/PageChart'
-import Loader from './components/Loader/Loader'
-import Error from './components/Error/Error'
+import { Loader, Error } from './components/UI'
 
 import { useAppData } from './useAppData'
 

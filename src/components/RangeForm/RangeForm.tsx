@@ -4,7 +4,7 @@ import { Box, Button, Typography } from '@mui/material'
 
 import { useFormContext } from 'react-hook-form'
 
-import Input from '../Input/Input'
+import { Input } from '../UI'
 
 import { quarters, years, houses } from '../../consts'
 
@@ -70,7 +70,7 @@ export const QuarterForm: React.FC<RangeFormProps> = (props) => {
       <Typography variant='h3' component='div'>
         Welcome to Norawy Stats
       </Typography>
-      <Typography sx={{marginBottom: 2}} variant='subtitle1' gutterBottom component='div'>
+      <Typography sx={{ marginBottom: 2 }} variant='subtitle1' gutterBottom component='div'>
         Select range to get statistics
       </Typography>
       <form onSubmit={props.onSubmit}>

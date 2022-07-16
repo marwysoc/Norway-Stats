@@ -14,7 +14,7 @@ import React, { useState, useEffect } from 'react'
 import CommentSection from '../../components/CommentSection/CommentSection'
 import { v4 as uuidv4 } from 'uuid'
 
-import SnackBar from '../SnackBar/SnackBar'
+import { SnackBar } from '../UI'
 
 interface DataSet {
     label: string;

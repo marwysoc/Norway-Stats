@@ -2,11 +2,10 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Box } from '@mui/material'
 import { PriceChart } from '../../components/PriceChart/PriceChart'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import Loader from '../../components/Loader/Loader'
 import { quarterSet, houses } from '../../consts'
 import { query } from '../../api/queryString'
 import { useEffect, useState } from 'react'
-import Error from '../../components/Error/Error'
+import { Loader, Error } from '../../components/UI'
 import axios from 'axios'
 
 interface ChartProps {
