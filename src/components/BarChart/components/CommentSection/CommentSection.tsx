@@ -1,28 +1,10 @@
-import { Box, Button } from '@mui/material'
-import { useForm, FormProvider } from 'react-hook-form'
-import CommentForm from '../CommentForm/CommentForm'
-import Comment from '../Comment/Comment'
 import { useState, useEffect } from 'react'
-import { ChartOptions } from 'chart.js'
+import { useForm, FormProvider } from 'react-hook-form'
 
-interface CommentSectionProps {
-    comment: string | null | undefined;
-    id: any;
-}
+import { Box, Button } from '@mui/material'
+import { CommentForm, Comment } from '../CommentSection'
 
-interface SavedStat {
-    id: any,
-    chartData: {
-        labels: string[] | undefined;
-        datasets: {
-            label: string;
-            data: number[] | undefined;
-            backgroundColor: string[];
-        }[];
-    },
-    options: ChartOptions,
-    comment?: string
-}
+import { SavedStat, CommentSectionProps } from '../../'
 
 export const CommentSection: React.FC<CommentSectionProps> = (props) => {
     const [comment, setComment] = useState<string>(props.comment!)

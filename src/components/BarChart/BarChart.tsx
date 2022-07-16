@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react'
+
 import { Paper, Typography, Button, Box } from '@mui/material'
 import {
     Chart as ChartJS,
@@ -10,41 +12,13 @@ import {
 } from 'chart.js'
 import { Bar } from 'react-chartjs-2'
 import { ChartOptions } from 'chart.js'
-import React, { useState, useEffect } from 'react'
-import CommentSection from '../../components/CommentSection/CommentSection'
+
 import { v4 as uuidv4 } from 'uuid'
 
+import { CommentSection } from './components/CommentSection'
 import { SnackBar } from '../UI'
 
-interface DataSet {
-    label: string;
-    data?: number[];
-    backgroundColor: string[];
-}
-
-interface SavedStat {
-    id: any;
-    houseType?: string;
-    chartData: {
-        labels?: string[];
-        datasets: DataSet[];
-    },
-    options: ChartOptions,
-    comment?: string
-};
-
-interface ChartProps {
-    labels: string[] | undefined;
-    dataSet: number[] | undefined;
-    start: string | undefined;
-    end: string | undefined;
-    showSaveBtn: boolean;
-    showCommentBtn: boolean;
-    comment?: string | null | undefined;
-    id?: any;
-    houseType: string | undefined;
-    key?: React.Key | null | undefined;
-}
+import { SavedStat, ChartProps } from './'
 
 ChartJS.register(
     CategoryScale,
@@ -55,8 +29,7 @@ ChartJS.register(
     Legend
 );
 
-
-export const PriceChart: React.FC<ChartProps> = React.memo(function PriceChart(props) {
+export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props) {
     const [savedStats, setSavedStats] = useState<SavedStat[]>(() => JSON.parse(localStorage.getItem('savedStats') || '[]') || [])
     const [showSnackBar, setShowSnackbar] = useState<boolean>(false);
     const [disabled, setDisabled] = useState<boolean>(false)
@@ -99,7 +72,7 @@ export const PriceChart: React.FC<ChartProps> = React.memo(function PriceChart(p
         },
     }
 
-    const onSaveClickHandler = (event: any) => {
+    const onSaveClickHandler = () => {
         setDisabled(true)
         setShowSnackbar(true)
         const saveStat = {
@@ -164,4 +137,4 @@ export const PriceChart: React.FC<ChartProps> = React.memo(function PriceChart(p
     )
 })
 
-export default PriceChart
+export default BarChart

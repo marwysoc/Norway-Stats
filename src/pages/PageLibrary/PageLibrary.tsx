@@ -3,7 +3,7 @@ import Button from '@mui/material/Button'
 import { ChartOptions } from 'chart.js'
 import { Typography, Box } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import PriceChart from '../../components/PriceChart/PriceChart'
+import { BarChart } from '../../components/BarChart'
 
 interface SavedStat {
   id: any,
@@ -68,7 +68,7 @@ export const PageLibrary: React.FC = () => {
               component='div'>No statistics in the library. Go to form page to generate some and save them.</Typography>
           ) : (
             savedStats.map((stat) => (
-              <PriceChart
+              <BarChart
                 key={Math.random()}
                 labels={stat.chartData.labels}
                 dataSet={stat.chartData.datasets[0].data}

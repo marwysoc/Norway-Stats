@@ -1,12 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { Button, Box } from '@mui/material'
-import { PriceChart } from '../../components/PriceChart/PriceChart'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { quarterSet, houses } from '../../consts'
 import { query } from '../../api/queryString'
 import { useEffect, useState } from 'react'
 import { Loader, Error } from '../../components/UI'
 import axios from 'axios'
+
+import { BarChart } from '../../components/BarChart'
 
 interface ChartProps {
     labels: string[] | undefined;
@@ -77,7 +78,7 @@ export const PageChart: React.FC<ChartProps> = (props) => {
                 >
                     Back to form
                 </Button>
-                <PriceChart labels={labels} dataSet={prices} houseType={house} start={start} end={end} showSaveBtn={true} showCommentBtn={false} />
+                <BarChart labels={labels} dataSet={prices} houseType={house} start={start} end={end} showSaveBtn={true} showCommentBtn={false} />
             </Box>
             {
                 isLoading ? <Loader /> : null
