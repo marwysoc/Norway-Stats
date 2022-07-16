@@ -1,21 +1,22 @@
-import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import DrawerAppBar from './components/AppBar/AppBar'
 
 import PageForm from './pages/PageForm/PageForm'
 import PageLibrary from './pages/PageLibrary/PageLibrary'
 import PageChart from './pages/PageChart/PageChart'
+
 import { Loader, Error } from './components/UI'
+import { Header } from './components/Header'
 
 import { useAppData } from './useAppData'
 
+import './App.css'
 
 const App: React.FC = () => {
   const { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onClickBtn } = useAppData()
 
   return (
     <div className="App">
-      <DrawerAppBar />
+      <Header/>
       <Routes>
         <Route
           path={'*'}

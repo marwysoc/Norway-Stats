@@ -1,11 +1,8 @@
 import Button from '@mui/material/Button'
 
-interface LinkProps {
-    linkTo: string;
-    linkTxt: string;
-}
+import { MenuLinkProps } from '../../'
 
-export const MenuLinkMobile: React.FC<LinkProps> = (props) => {
+export const MenuLinkMobile: React.FC<MenuLinkProps> = (props) => {
     return (
         <Button sx={{ color: '#fff' }} href={props.linkTo}>
             {props.linkTxt}
