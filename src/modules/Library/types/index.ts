@@ -14,3 +14,8 @@ export interface SavedStat {
   options: ChartOptions,
   comment?: string
 }
+
+export interface ChartListItemProps {
+  item: any;
+  key: React.Key;
+}
