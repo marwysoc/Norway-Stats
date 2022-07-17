@@ -8,9 +8,11 @@ import { ChartListItemProps } from "../types"
 
 export const ChartlistItem: React.FC<ChartListItemProps> = (props) => {
     const [showChart, setShowChart] = useState<boolean>(false)
+    const [buttonLabel, setButtonLabel] = useState<string>('Show chart')
 
     const onChartListItemClick = () => {
         setShowChart(!showChart)
+        setButtonLabel(() => !showChart ? 'Hide chart' : 'Show chart')
     }
 
     return (
@@ -53,7 +55,7 @@ export const ChartlistItem: React.FC<ChartListItemProps> = (props) => {
                         variant={'contained'}
                         onClick={onChartListItemClick}
                     >
-                        Show chart
+                        {buttonLabel}
                     </Button>
                 </Typography>
             </Paper>
