@@ -12,7 +12,7 @@ import { useAppData } from './useAppData'
 import './App.css'
 
 const App: React.FC = () => {
-  const { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onClickBtn } = useAppData()
+  const { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onDismissErrorClick } = useAppData()
 
   return (
     <div className="App">
@@ -44,7 +44,8 @@ const App: React.FC = () => {
         hasError ?
           <Error
             errorMessage={`Error has occured: ${errorMessage}`}
-            onButtonClick={onClickBtn}
+            onButtonClick={onDismissErrorClick}
+            buttonLabel={'Back to form'}
           />
           :
           null

@@ -1,0 +1,1 @@
+export { makeQuery } from './makeQuery'

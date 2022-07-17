@@ -3,6 +3,7 @@ import { Box, Typography, Button } from '@mui/material'
 interface ErrorProps {
     errorMessage: string;
     onButtonClick: any;
+    buttonLabel: string;
 }
 
 export const Error: React.FC<ErrorProps> = (props) => {
@@ -35,7 +36,7 @@ export const Error: React.FC<ErrorProps> = (props) => {
                         marginTop: 1
                     }}
                 >
-                    Back to Home Page
+                    {props.buttonLabel}
                 </Button>
             </Box>
         </Box>

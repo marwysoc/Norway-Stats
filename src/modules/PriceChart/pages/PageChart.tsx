@@ -1,54 +1,26 @@
 import { useNavigate, useParams } from 'react-router-dom'
+
 import { Button, Box } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
-import { quarterSet, houses } from '../../../consts'
-import { query } from '../../../api/queryString'
-import { useEffect, useState } from 'react'
+
 import { Loader, Error } from '../../../components/UI'
-import axios from 'axios'
 
 import { BarChart } from '../../../components/BarChart'
 import { ChartProps } from '../'
 
+import { houses } from '../../../consts'
+
+import { usePageChartData } from '../hooks'
+import { makeQuery } from '../../../utils'
+
 export const PageChart: React.FC<ChartProps> = (props) => {
     const { start, end, house } = useParams();
-
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [hasError, setHasError] = useState<boolean>(false)
-    const [errorMessage, setErrorMessage] = useState<string>('')
-    const [labels, setLabels] = useState<string[]>(() => props.labels ? props.labels : [])
-    const [prices, setPrices] = useState<number[]>(() => props.dataSet ? props.dataSet : [])
+    const houseType = houses.filter((h: any) => h.label === house)[0].value
+    const { query } = makeQuery(start!, end!, houseType!)
+    const { isLoading, hasError, errorMessage, labels, prices, onDismissErrorClick } = usePageChartData(props.labels, props.dataSet, query)
 
     const navigate = useNavigate()
     const onClickGoHome = () => navigate('/')
-
-    useEffect(() => {
-        if (props.labels === undefined || props.dataSet === undefined) {
-            setIsLoading(true)
-            const startIndex: number = quarterSet.indexOf(start!)
-            const endIndex: number = quarterSet.indexOf(end!)
-            const houseType = houses.filter((h) => h.label === house)
-
-            query.query[3].selection.values = quarterSet.slice(startIndex, endIndex + 1)
-            query.query[1].selection.values[0] = houseType[0].value
-            setLabels(query.query[3].selection.values)
-
-            async function fetchData() {
-                await axios.post("https://data.ssb.no/api/v0/en/table/05963", query)
-                    .then((response) => {
-                        setPrices(response.data.value)
-                        setIsLoading(false)
-                    })
-                    .catch(error => {
-                        setHasError(true)
-                        setErrorMessage(error.message)
-                    })
-            }
-            fetchData()
-        } else {
-            setIsLoading(false)
-        }
-    }, [])
 
     return (
         <>
@@ -82,11 +54,9 @@ export const PageChart: React.FC<ChartProps> = (props) => {
             {
                 hasError ?
                     <Error
+                        buttonLabel={'Go back'}
                         errorMessage={`Error has occured: ${errorMessage}`}
-                        onButtonClick={() => {
-                            setHasError(false)
-                            setIsLoading(false)
-                        }}
+                        onButtonClick={onDismissErrorClick}
                     />
                     :
                     null
