@@ -1,9 +1,9 @@
 import { useNavigate } from 'react-router-dom'
 
-import { Typography, Box, Button } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { Typography, Box } from '@mui/material'
 
 import { ChartList } from '../components'
+import { GoBackButton } from '../../../components/UI'
 
 import { SavedStat } from '../types'
 
@@ -24,17 +24,14 @@ export const PageLibrary: React.FC = () => {
         marginTop: '68px',
         marginBottom: '64px'
       }}>
-      <Button
+      <GoBackButton
         sx={{
           alignSelf: 'flex-start',
           marginLeft: 1.5
         }}
-        variant="text"
-        startIcon={<ArrowBackIcon />}
-        onClick={onClickGoHome}
-      >
-        Back to form
-      </Button>
+        onClickGoBack={onClickGoHome}
+        label={'Back to form'}
+      />
       <Typography
         variant='h4'
         gutterBottom

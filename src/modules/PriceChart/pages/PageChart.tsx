@@ -1,9 +1,8 @@
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { Button, Box } from '@mui/material'
-import ArrowBackIcon from '@mui/icons-material/ArrowBack'
+import { Box } from '@mui/material'
 
-import { Loader, Error } from '../../../components/UI'
+import { Loader, Error, GoBackButton } from '../../../components/UI'
 
 import { BarChart } from '../../../components/BarChart'
 import { ChartProps } from '../'
@@ -34,18 +33,14 @@ export const PageChart: React.FC<ChartProps> = (props) => {
                     marginTop: '68px',
                     marginBottom: '64px'
                 }}>
-                <Button
+                <GoBackButton
                     sx={{
                         alignSelf: 'flex-start',
                         marginLeft: 1.5
                     }}
-                    variant={'text'}
-                    color={'primary'}
-                    startIcon={<ArrowBackIcon />}
-                    onClick={onClickGoHome}
-                >
-                    Back to form
-                </Button>
+                    onClickGoBack={onClickGoHome}
+                    label={'Back to form'}
+                />
                 <BarChart labels={labels} dataSet={prices} houseType={house} start={start} end={end} showSaveBtn={true} showCommentBtn={false} />
             </Box>
             {
