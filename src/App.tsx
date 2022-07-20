@@ -1,27 +1,27 @@
-import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import DrawerAppBar from './components/AppBar/AppBar'
 
-import PageForm from './pages/PageForm/PageForm'
-import PageLibrary from './pages/PageLibrary/PageLibrary'
-import PageChart from './pages/PageChart/PageChart'
-import Loader from './components/Loader/Loader'
-import Error from './components/Error/Error'
+import { PageForm } from './modules/PropertyForm'
+import { PageChart } from './modules/PriceChart'
+import { PageLibrary } from './modules/Library'
+
+import { Loader, Error } from './components/UI'
+import { Header } from './components/Header'
 
 import { useAppData } from './useAppData'
 
+import './App.css'
 
 const App: React.FC = () => {
-  const { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onClickBtn } = useAppData()
+  const { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onDismissErrorClick } = useAppData()
 
   return (
     <div className="App">
-      <DrawerAppBar />
+      <Header />
       <Routes>
         <Route
           path={'*'}
           element={
-            <PageForm onClickSubmit={onClickSubmitHandler} />
+            <PageForm onSubmit={onClickSubmitHandler} />
           }
         />
         <Route
@@ -44,7 +44,8 @@ const App: React.FC = () => {
         hasError ?
           <Error
             errorMessage={`Error has occured: ${errorMessage}`}
-            onButtonClick={onClickBtn}
+            onButtonClick={onDismissErrorClick}
+            buttonLabel={'Back to form'}
           />
           :
           null

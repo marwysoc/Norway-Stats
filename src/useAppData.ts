@@ -1,8 +1,8 @@
-import { useCallback, useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { query } from "./api/queryString"
-import { quarterSet } from "./consts"
-import { getPropertyValues } from "./services"
+import { useCallback, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
+import { makeQuery } from './utils'
+import { getPropertyValues } from './services'
 
 const useAppData = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -13,7 +13,7 @@ const useAppData = () => {
 
     const navigate = useNavigate()
 
-    const onClickBtn = useCallback(() => {
+    const onDismissErrorClick = useCallback(() => {
         setHasError(false)
         setIsLoading(false)
     }, [])
@@ -23,11 +23,8 @@ const useAppData = () => {
         const start: string = `${data.startYear}K${data.startQuarter}`
         const end: string = `${data.endYear}K${data.endQuarter}`
 
-        const startIndex: number = quarterSet.indexOf(start)
-        const endIndex: number = quarterSet.indexOf(end)
+        const { query } = makeQuery(start, end, data.houseType)
 
-        query.query[3].selection.values = quarterSet.slice(startIndex, endIndex + 1)
-        query.query[1].selection.values[0] = data.houseType
         setLabels(query.query[3].selection.values)
 
         try {
@@ -42,7 +39,7 @@ const useAppData = () => {
             setErrorMessage(error.message)
         }
     }, [navigate])
-    return { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onClickBtn }
+    return { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onDismissErrorClick }
 }
 
 export { useAppData }
