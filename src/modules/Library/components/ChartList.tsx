@@ -1,8 +1,13 @@
 import { Typography } from '@mui/material'
 
 import { ChartListItem } from '.'
+import { SavedStat } from '../types'
 
-export const ChartList: React.FC<any> = (props) => {
+interface ChartListProps {
+    savedStats: SavedStat[]
+}
+
+export const ChartList: React.FC<ChartListProps> = (props) => {
     return (
         <>
             {
@@ -13,7 +18,7 @@ export const ChartList: React.FC<any> = (props) => {
                         component='div'>No statistics in the library. Go to form page to generate some and save them.
                     </Typography>
                 ) : (
-                    props.savedStats.map((stat: any) => (
+                    props.savedStats.map((stat: SavedStat) => (
                         <ChartListItem key={Math.random()} item={stat} />
                     ))
                 )

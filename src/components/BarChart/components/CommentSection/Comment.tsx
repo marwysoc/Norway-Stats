@@ -1,9 +1,6 @@
 import { Typography, Box, Button } from '@mui/material'
 
-interface CommentProps {
-    onEditBtnClick: any;
-    comment: string;
-}
+import { CommentProps } from '../../types'
 
 export const Comment: React.FC<CommentProps> = (props) => {
 

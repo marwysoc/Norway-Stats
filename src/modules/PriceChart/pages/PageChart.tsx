@@ -14,7 +14,7 @@ import { makeQuery } from '../../../utils'
 
 export const PageChart: React.FC<ChartProps> = (props) => {
     const { start, end, house } = useParams();
-    const houseType = houses.filter((h: any) => h.label === house)[0].value
+    const houseType = houses.filter((h: { value: string, label: string }) => h.label === house)[0].value
     const { query } = makeQuery(start!, end!, houseType!)
     const { isLoading, hasError, errorMessage, labels, prices, onDismissErrorClick } = usePageChartData(props.labels, props.dataSet, query)
 

@@ -2,7 +2,7 @@
 import { quarterSet } from '../consts'
 import { query } from '../api/queryString'
 
-const makeQuery = (start: string, end: string, houseType: string) => {
+const makeQuery: (a: string, b: string, c: string) => any = (start, end, houseType) => {
     const startIndex: number = quarterSet.indexOf(start)
     const endIndex: number = quarterSet.indexOf(end)
 

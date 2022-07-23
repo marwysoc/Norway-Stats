@@ -5,7 +5,7 @@ import { Typography, Box } from '@mui/material'
 import { ChartList } from '../components'
 import { GoBackButton } from '../../../components/UI'
 
-import { SavedStat } from '../types'
+import { SavedStat } from '../'
 
 export const PageLibrary: React.FC = () => {
   const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []

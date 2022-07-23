@@ -1,10 +1,29 @@
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { SubmitHandler } from 'react-hook-form'
 
 import { makeQuery } from './utils'
 import { getPropertyValues } from './services'
 
-const useAppData = () => {
+interface FormValues { 
+    startYear: string;
+    endYear: string;
+    startQuarter: string;
+    endQuarter: string;
+    houseType: string;
+}
+
+interface AppDataValues {
+    isLoading: boolean;
+    hasError: boolean;
+    errorMessage?: string;
+    labels?: string[];
+    prices?: number[];
+    onClickSubmitHandler: any;
+    onDismissErrorClick: () => void;
+}
+
+const useAppData: () => AppDataValues = () => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [hasError, setHasError] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
@@ -13,12 +32,12 @@ const useAppData = () => {
 
     const navigate = useNavigate()
 
-    const onDismissErrorClick = useCallback(() => {
+    const onDismissErrorClick: () => void = useCallback(() => {
         setHasError(false)
         setIsLoading(false)
     }, [])
 
-    const onClickSubmitHandler = useCallback(async (data: any) => {
+    const onClickSubmitHandler: SubmitHandler<FormValues> = useCallback(async (data) => {
         setIsLoading(true)
         const start: string = `${data.startYear}K${data.startQuarter}`
         const end: string = `${data.endYear}K${data.endQuarter}`

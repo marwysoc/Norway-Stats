@@ -2,7 +2,16 @@ import { useState, useEffect, useCallback } from 'react'
 
 import { getPropertyValues } from '../../../services'
 
-const usePageChartData = (labelArray?: string[], dataSet?: number[], query?: any) => {
+interface PageChartDataValues {
+    isLoading: boolean;
+    hasError: boolean;
+    errorMessage?: string;
+    labels?: string[];
+    prices?: number[];
+    onDismissErrorClick: () => void;
+}
+
+const usePageChartData: (labelArray?: string[], dataSet?: number[], query?: any) => PageChartDataValues = (labelArray, dataSet, query) => {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [hasError, setHasError] = useState<boolean>(false)
@@ -10,7 +19,7 @@ const usePageChartData = (labelArray?: string[], dataSet?: number[], query?: any
     const [labels, setLabels] = useState<string[]>(() => labelArray ? labelArray : [])
     const [prices, setPrices] = useState<number[]>(() => dataSet ? dataSet : [])
 
-    const onDismissErrorClick = useCallback(() => {
+    const onDismissErrorClick: () => void = useCallback(() => {
         setHasError(false)
         setIsLoading(false)
     }, [])

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 
 import { Box, Button } from '@mui/material'
 import { CommentForm, Comment } from '../CommentSection'
 
-import { SavedStat, CommentSectionProps } from '../../'
+import { SavedStat, CommentSectionProps, CommentFormValues } from '../../'
 
 export const CommentSection: React.FC<CommentSectionProps> = (props) => {
     const [comment, setComment] = useState<string>(props.comment!)
@@ -14,7 +14,7 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
 
     const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
 
-    const methods = useForm({
+    const methods = useForm<CommentFormValues>({
         defaultValues: {
             comment: comment
         }
@@ -29,12 +29,17 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
         localStorage.setItem('savedStats', JSON.stringify(savedStats))
     }, [comment, props, savedStats])
 
-    const onClickSubmit = (data: any) => {
+    const onClickSubmit: SubmitHandler<CommentFormValues> = (data) => {
         if (data.comment) {
             setComment(data.comment)
             setShowForm(false)
             setShowComment(true)
         }
+    }
+
+    const onEditHandler: () => void = () => {
+        setShowForm(true)
+        setShowComment(false)
     }
 
     return (
@@ -73,10 +78,7 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
                 showComment && (
                     <Comment
                         comment={comment}
-                        onEditBtnClick={() => {
-                            setShowForm(true)
-                            setShowComment(false)
-                        }}
+                        onEditBtnClick={onEditHandler}
                     />
                 )
             }

@@ -36,3 +36,12 @@ export interface CommentSectionProps {
     comment: string | null | undefined;
     id: any;
 }
+
+export interface CommentFormValues {
+    comment: string;
+}
+
+export interface CommentProps {
+    onEditBtnClick: () => void;
+    comment: string;
+}
