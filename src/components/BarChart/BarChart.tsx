@@ -72,7 +72,7 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
         },
     }
 
-    const onSaveClickHandler = () => {
+    const onSaveClickHandler: () => void = () => {
         setDisabled(true)
         setShowSnackbar(true)
         const saveStat = {
