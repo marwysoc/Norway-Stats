@@ -10,7 +10,7 @@ export const ChartlistItem: React.FC<ChartListItemProps> = (props) => {
     const [showChart, setShowChart] = useState<boolean>(false)
     const [buttonLabel, setButtonLabel] = useState<string>('Show chart')
 
-    const onChartListItemClick = () => {
+    const onChartListItemClick: () => void = () => {
         setShowChart(!showChart)
         setButtonLabel(() => !showChart ? 'Hide chart' : 'Show chart')
     }

@@ -16,6 +16,6 @@ export interface SavedStat {
 }
 
 export interface ChartListItemProps {
-  item: any;
+  item: SavedStat;
   key: React.Key;
 }
