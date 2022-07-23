@@ -1,6 +1,6 @@
 export interface DrawerProps {
     isOpen: boolean;
-    handleToggle: any;
+    handleToggle: () => void;
 }
 
 export interface MenuLinkProps {

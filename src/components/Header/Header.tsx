@@ -9,7 +9,7 @@ import { DrawerBar } from './components/Drawer'
 export const Header: React.FC = () => {
     const [mobileOpen, setMobileOpen] = useState<boolean>(false);
 
-    const handleDrawerToggle = () => {
+    const handleDrawerToggle: () => void = () => {
         setMobileOpen(!mobileOpen)
     };
 
@@ -33,7 +33,7 @@ export const Header: React.FC = () => {
                     >
                         Norway Stats
                     </Typography>
-                    <Menu isMobile={false}/>
+                    <Menu isMobile={false} />
                 </Toolbar>
             </AppBar>
             <Box component='nav'>
