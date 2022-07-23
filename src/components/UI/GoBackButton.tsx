@@ -2,7 +2,7 @@ import { Button } from '@mui/material'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 
 interface GoBackButtonProps {
-    onClickGoBack: any;
+    onClickGoBack: () => void;
     label: string;
     sx: any;
 }

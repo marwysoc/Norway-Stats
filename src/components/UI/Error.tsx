@@ -2,7 +2,7 @@ import { Box, Typography, Button } from '@mui/material'
 
 interface ErrorProps {
     errorMessage: string;
-    onButtonClick: any;
+    onButtonClick: () => void;
     buttonLabel: string;
 }
 
