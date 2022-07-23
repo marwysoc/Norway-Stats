@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom'
 
 import { Box, Button } from '@mui/material'
 
-import { PropertyForm, PropertyFormProps} from '../'
+import { PropertyForm } from '../components'
+import { PropertyFormProps, FormValues } from '../'
 
 export const PageForm: React.FC<PropertyFormProps> = (props) => {
 
-  const methods = useForm()
+  const methods = useForm<FormValues>()
   const { handleSubmit } = methods
 
   const navigate = useNavigate()

@@ -4,9 +4,17 @@ export interface DescribeTxtProps {
 }
 
 export interface PropertyFormProps {
-    onSubmit: (data: any) => void
+    onSubmit: any;
 }
 
 export interface InputDescriberProps {
     describerTxt: string;
+}
+
+export interface FormValues { 
+    startYear: string;
+    endYear: string;
+    startQuarter: string;
+    endQuarter: string;
+    houseType: string;
 }

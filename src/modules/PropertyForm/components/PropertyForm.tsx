@@ -3,12 +3,12 @@ import { useFormContext } from 'react-hook-form'
 
 import { Box, Button } from '@mui/material'
 
-import { Input } from '../../components/UI'
-import { DescribeText, InputDescriber } from './components'
+import { Input } from '../../../components/UI'
+import { DescribeText, InputDescriber } from '.'
 
-import { quarters, years, houses } from '../../consts'
+import { quarters, years, houses } from '../../../consts'
 
-import { PropertyFormProps } from '.'
+import { PropertyFormProps } from '..'
 
 export const PropertyForm: React.FC<PropertyFormProps> = (props) => {
   const {
