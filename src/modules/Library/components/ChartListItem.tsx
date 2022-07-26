@@ -1,20 +1,11 @@
-import { useState } from 'react'
-
-import { Paper, Box, Typography, Button } from '@mui/material'
+import { Paper, Box, Typography } from '@mui/material'
 
 import { BarChart } from '../../../components/BarChart'
+import { BasicModal } from '../../../components/UI'
 
 import { ChartListItemProps } from "../types"
 
 export const ChartlistItem: React.FC<ChartListItemProps> = (props) => {
-    const [showChart, setShowChart] = useState<boolean>(false)
-    const [buttonLabel, setButtonLabel] = useState<string>('Show chart')
-
-    const onChartListItemClick: () => void = () => {
-        setShowChart(!showChart)
-        setButtonLabel(() => !showChart ? 'Hide chart' : 'Show chart')
-    }
-
     return (
         <Box
             sx={{
@@ -48,31 +39,24 @@ export const ChartlistItem: React.FC<ChartListItemProps> = (props) => {
 
                     <Box sx={{ fontWeight: 'bold', m: 1 }}>House type: </Box>
                     {props.item.houseType}
-                    <Button
-                        sx={{
-                            margin: 2
-                        }}
-                        variant={'contained'}
-                        onClick={onChartListItemClick}
-                    >
-                        {buttonLabel}
-                    </Button>
+                    <BasicModal
+                        buttonLabel={'Show more'}
+                        printToConsole={`Type: ${props.item.houseType}, Date: ${props.item.chartData!.labels![0]} - ${props.item.chartData!.labels![props.item.chartData!.labels!.length - 1]}`}
+                        modalBody={
+                            <BarChart
+                                labels={props.item.chartData.labels}
+                                dataSet={props.item.chartData.datasets[0].data}
+                                start={props.item.chartData!.labels![0]}
+                                houseType={props.item.houseType}
+                                end={props.item.chartData!.labels![props.item.chartData!.labels!.length - 1]}
+                                showSaveBtn={false}
+                                showCommentBtn={true}
+                                comment={props.item.comment ? props.item.comment : null}
+                                id={props.item.id}
+                            />
+                        } />
                 </Typography>
             </Paper>
-            {
-                showChart &&
-                <BarChart
-                    labels={props.item.chartData.labels}
-                    dataSet={props.item.chartData.datasets[0].data}
-                    start={props.item.chartData!.labels![0]}
-                    houseType={props.item.houseType}
-                    end={props.item.chartData!.labels![props.item.chartData!.labels!.length - 1]}
-                    showSaveBtn={false}
-                    showCommentBtn={true}
-                    comment={props.item.comment ? props.item.comment : null}
-                    id={props.item.id}
-                />
-            }
         </Box>
     )
 }
