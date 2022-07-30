@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 import { Box, Button } from '@mui/material'
@@ -15,6 +15,8 @@ export const PageForm: React.FC<PropertyFormProps> = (props) => {
   const navigate = useNavigate()
   const onClickGoLibrary = () => navigate('/lib')
 
+  const submitForm: SubmitHandler<FormValues> = (data) => props.onSubmit(data)
+
   return (
     <Box sx={{
       marginTop: '64px',
@@ -27,7 +29,7 @@ export const PageForm: React.FC<PropertyFormProps> = (props) => {
         {...methods}
       >
         <PropertyForm
-          onSubmit={handleSubmit((data) => props.onSubmit(data))}
+          onSubmit={handleSubmit(submitForm)}
         />
       </FormProvider>
 

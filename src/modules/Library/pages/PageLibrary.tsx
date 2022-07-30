@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useNavigate, createSearchParams, URLSearchParamsInit } from 'react-router-dom'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useNavigate, createSearchParams } from 'react-router-dom'
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 
 import { Typography, Box } from '@mui/material'
 
@@ -29,7 +29,7 @@ export const PageLibrary: React.FC = () => {
   const methods = useForm<ChartSearcherFormValues>()
   const { handleSubmit } = methods
 
-  const filterStats: (data: ChartSearcherFormValues) => void = (data) => {
+  const filterStats: SubmitHandler<ChartSearcherFormValues> = (data) => {
     const filter = houses.find((house) => house.value === data.houseType)
     params.houseType = filter?.label
     const filtered = savedStats.filter((stat) => stat.houseType === filter?.label)

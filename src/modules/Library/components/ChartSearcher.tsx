@@ -6,7 +6,7 @@ import { Input, CheckBox } from '../../../components/UI'
 import { houses } from '../../../consts'
 
 interface ChartSearcherProps {
-    onSubmit: any;
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     resetForm: any;
 }
 

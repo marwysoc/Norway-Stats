@@ -4,6 +4,7 @@ export interface DescribeTxtProps {
 }
 
 export interface PropertyFormProps {
+    // onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     onSubmit: any;
 }
 

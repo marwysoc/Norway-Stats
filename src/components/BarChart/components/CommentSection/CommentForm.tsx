@@ -3,7 +3,7 @@ import { useFormContext} from 'react-hook-form'
 import { Button, Box, TextField } from '@mui/material'
 
 interface CommentFormProps {
-    onSubmit: any;
+    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 export const CommentForm: React.FC<CommentFormProps> = (props) => {
