@@ -19,3 +19,8 @@ export interface ChartListItemProps {
   item: SavedStat;
   key: React.Key;
 }
+
+export interface ChartSearcherFormValues {
+  houseType: string;
+  withComments: boolean;
+}

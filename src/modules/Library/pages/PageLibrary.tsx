@@ -1,17 +1,53 @@
-import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate, createSearchParams, URLSearchParamsInit } from 'react-router-dom'
+import { useForm, FormProvider } from 'react-hook-form'
 
 import { Typography, Box } from '@mui/material'
 
-import { ChartList } from '../components'
+import { ChartList, ChartSearcher } from '../components'
 import { GoBackButton } from '../../../components/UI'
+
+import { ChartSearcherFormValues } from '../'
+import { houses } from '../../../consts'
 
 import { SavedStat } from '../'
 
 export const PageLibrary: React.FC = () => {
   const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
+  const [filteredStats, setFilteredStats] = useState<SavedStat[]>(savedStats)
+  const params: any = { houseType: '', withComments: false }
 
   const navigate = useNavigate()
   const onClickGoHome = () => navigate('/')
+
+  const goFilterUrl = () =>
+    navigate({
+      pathname: '/lib',
+      search: `?${createSearchParams(params)}`,
+    })
+
+  const methods = useForm<ChartSearcherFormValues>()
+  const { handleSubmit } = methods
+
+  const filterStats: (data: ChartSearcherFormValues) => void = (data) => {
+    const filter = houses.find((house) => house.value === data.houseType)
+    params.houseType = filter?.label
+    const filtered = savedStats.filter((stat) => stat.houseType === filter?.label)
+
+    if (data.withComments) {
+      params.withComments = data.withComments
+      setFilteredStats(filtered.filter((stat) => stat.hasOwnProperty('comment')))
+    } else {
+      setFilteredStats(filtered.filter((stat) => !stat.hasOwnProperty('comment')))
+    }
+    goFilterUrl()
+  }
+
+  // TO DO clear form with reset method from react-hook-form
+  const clearFilter: () => void = () => {
+    setFilteredStats(savedStats)
+    navigate('/lib')
+  }
 
   return (
     <Box
@@ -37,6 +73,14 @@ export const PageLibrary: React.FC = () => {
         gutterBottom
         component='div'>Library
       </Typography>
+      <FormProvider
+        {...methods}
+      >
+        <ChartSearcher
+          onSubmit={handleSubmit(filterStats)}
+          resetForm={clearFilter}
+        />
+      </FormProvider>
       <Box
         sx={{
           display: 'flex',
@@ -45,7 +89,7 @@ export const PageLibrary: React.FC = () => {
           flexDirection: 'column'
         }}
       >
-        <ChartList savedStats={savedStats} />
+        <ChartList savedStats={filteredStats} />
       </Box>
     </Box>
 

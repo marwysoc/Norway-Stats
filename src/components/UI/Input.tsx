@@ -3,7 +3,7 @@ import React from 'react'
 import { Box, TextField, MenuItem } from '@mui/material'
 
 interface InputProps {
-  errorMessage: string;
+  errorMessage?: string;
   label: string;
   options: { value: string, label: string }[];
 }
