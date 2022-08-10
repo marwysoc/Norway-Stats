@@ -4,7 +4,7 @@ import {
 } from '@mui/material'
 
 import { ChartListItem } from '.'
-import { SavedStat } from '../types'
+import { SavedStat } from '../../../components/BarChart'
 
 interface ChartListProps {
     savedStats: SavedStat[]

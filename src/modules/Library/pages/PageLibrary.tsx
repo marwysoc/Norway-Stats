@@ -9,7 +9,7 @@ import { GoBackButton } from '../../../components/UI'
 
 import { ChartSearcherFormValues } from '../'
 
-import { SavedStat } from '../'
+import { SavedStat } from '../../../components/BarChart'
 
 export const PageLibrary: React.FC = () => {
   const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
@@ -30,9 +30,10 @@ export const PageLibrary: React.FC = () => {
 
   const filterFunc = (filterParams: ChartSearcherFormValues): void => {
     const filtered = savedStats.filter((stat) =>
-      stat.houseType.includes(filterParams.searchInput) ||
-      stat.chartData!.labels![0].includes(filterParams.searchInput) ||
-      stat.chartData!.labels![stat.chartData!.labels!.length - 1].includes(filterParams.searchInput)
+      stat.houseType!.toLowerCase().includes(filterParams.searchInput) ||
+      stat.chartData!.labels![0].toLowerCase().includes(filterParams.searchInput) ||
+      stat.chartData!.labels![stat.chartData!.labels!.length - 1].toLowerCase().includes(filterParams.searchInput) ||
+      stat.statOwner.toLowerCase().includes(filterParams.searchInput)
     )
 
     if (filterParams.withComments) {

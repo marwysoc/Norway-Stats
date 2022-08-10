@@ -16,7 +16,8 @@ export interface SavedStat {
     houseType?: string;
     chartData: ChartData;
     options: ChartOptions;
-    comment?: string;
+    comment?: string | undefined | null;
+    statOwner: string;
 }
 
 export interface ChartProps {

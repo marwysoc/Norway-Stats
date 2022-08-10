@@ -79,7 +79,8 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
             id: uuidv4(),
             houseType: props.houseType,
             chartData: chartData,
-            options: options
+            options: options, 
+            statOwner: 'Marta'
         }
         setSavedStats((prevStats) => [...prevStats, saveStat])
         setTimeout(() => {
