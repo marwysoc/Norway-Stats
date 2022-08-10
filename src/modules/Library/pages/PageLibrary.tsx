@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { useNavigate, createSearchParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 
 import { Typography, Box } from '@mui/material'
@@ -12,29 +12,35 @@ import { ChartSearcherFormValues } from '../'
 import { SavedStat } from '../../../components/BarChart'
 
 export const PageLibrary: React.FC = () => {
+  let [searchParams, setSearchParams] = useSearchParams();
+
   const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
   const [filteredStats, setFilteredStats] = useState<SavedStat[]>(savedStats)
-  const params: any = { search: '', withComments: false }
+
+  const params: any = { searchInput: '', withComments: false }
 
   const navigate = useNavigate()
   const onClickGoHome = () => navigate('/')
 
-  const goFilterUrl = () =>
-    navigate({
-      pathname: '/lib',
-      search: `?${createSearchParams(params)}`,
-    })
+  useEffect(() => {
+    if (searchParams) {
+      const boolWithComments = searchParams.get('withComments') === 'true' ? true : false
+      filterFunc({
+        searchInput: searchParams.get('searchInput') as string,
+        withComments: boolWithComments
+      })
+    }
+  }, [])
 
   const methods = useForm<ChartSearcherFormValues>()
   const { handleSubmit, reset } = methods
 
   const filterFunc = (filterParams: ChartSearcherFormValues): void => {
     const filtered = savedStats.filter((stat) =>
-      stat.houseType!.toLowerCase().includes(filterParams.searchInput) ||
-      stat.chartData!.labels![0].toLowerCase().includes(filterParams.searchInput) ||
-      stat.chartData!.labels![stat.chartData!.labels!.length - 1].toLowerCase().includes(filterParams.searchInput) ||
-      stat.statOwner.toLowerCase().includes(filterParams.searchInput)
-    )
+      stat.houseType!.toLowerCase().includes(filterParams.searchInput as string) ||
+      stat.chartData!.labels![0].toLowerCase().includes(filterParams.searchInput as string) ||
+      stat.chartData!.labels![stat.chartData!.labels!.length - 1].toLowerCase().includes(filterParams.searchInput as string) ||
+      stat.statOwner.toLowerCase().includes(filterParams.searchInput as string))
 
     if (filterParams.withComments) {
       setFilteredStats(filtered.filter((stat) => stat.hasOwnProperty('comment')))
@@ -46,8 +52,8 @@ export const PageLibrary: React.FC = () => {
   const filterStats: SubmitHandler<ChartSearcherFormValues> = (data) => {
     params.searchInput = data.searchInput
     params.withComments = data.withComments
+    setSearchParams(params)
     filterFunc(data)
-    goFilterUrl()
   }
 
   const clearFilter = (): void => {

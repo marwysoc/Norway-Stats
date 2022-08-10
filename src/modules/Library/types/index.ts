@@ -22,6 +22,6 @@ export interface ChartListItemProps {
 }
 
 export interface ChartSearcherFormValues {
-  searchInput: string;
+  searchInput?: string;
   withComments: boolean;
 }
