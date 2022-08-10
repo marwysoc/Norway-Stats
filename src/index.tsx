@@ -4,10 +4,15 @@ import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { ThemeProvider } from '@mui/material/styles'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
-import {theme} from './theme/theme'
+
+import { theme } from './theme/theme'
 
 import { BrowserRouter as Router } from 'react-router-dom'
+
+const queryClient = new QueryClient()
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,9 +20,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Router>
-        <App />
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <App />
+        </Router>
+        <ReactQueryDevtools initialIsOpen={false} position={'bottom-right'}/>
+      </QueryClientProvider>
     </ThemeProvider>
   </React.StrictMode>
 );

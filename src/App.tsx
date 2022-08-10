@@ -12,7 +12,7 @@ import { useAppData } from './useAppData'
 import './App.css'
 
 const App: React.FC = () => {
-  const { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onDismissErrorClick } = useAppData()
+  const { isLoading, isError, isFetching, errorMessage, labels, prices, onClickSubmitHandler, onDismissErrorClick } = useAppData()
 
   return (
     <div className="App">
@@ -38,10 +38,10 @@ const App: React.FC = () => {
         />
       </Routes>
       {
-        isLoading ? <Loader /> : null
+        (isLoading && isFetching) ? <Loader /> : null
       }
       {
-        hasError ?
+        isError ?
           <Error
             errorMessage={`Error has occured: ${errorMessage}`}
             onButtonClick={onDismissErrorClick}

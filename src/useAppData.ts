@@ -1,11 +1,12 @@
 import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { SubmitHandler } from 'react-hook-form'
 
 import { makeQuery } from './utils'
 import { getPropertyValues } from './services'
 
-interface FormValues { 
+interface FormValues {
     startYear: string;
     endYear: string;
     startQuarter: string;
@@ -15,7 +16,8 @@ interface FormValues {
 
 interface AppDataValues {
     isLoading: boolean;
-    hasError: boolean;
+    isError: boolean;
+    isFetching: boolean;
     errorMessage?: string;
     labels?: string[];
     prices?: number[];
@@ -24,41 +26,57 @@ interface AppDataValues {
 }
 
 const useAppData: () => AppDataValues = () => {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [hasError, setHasError] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
+
     const [labels, setLabels] = useState<string[]>()
     const [prices, setPrices] = useState<number[]>()
+    const [query, setQuery] = useState<any>()
 
     const navigate = useNavigate()
 
+    const { data: propertyValues, isLoading, isError, isFetching,  isSuccess, error, refetch } = useQuery<any, Error>(
+        ['propertyValues', query],
+        () => getPropertyValues(query),
+        {
+            enabled: false,
+        }
+    )
+
+    if (isError) {
+        setErrorMessage(error.message)
+    }
+
     const onDismissErrorClick: () => void = useCallback(() => {
-        setHasError(false)
-        setIsLoading(false)
+        navigate('/')
     }, [])
 
-    const onClickSubmitHandler: SubmitHandler<FormValues> = useCallback(async (data) => {
-        setIsLoading(true)
-        const start: string = `${data.startYear}K${data.startQuarter}`
-        const end: string = `${data.endYear}K${data.endQuarter}`
+    const onClickSubmitHandler: SubmitHandler<FormValues> = useCallback(async (formData) => {
+        const start: string = `${formData.startYear}K${formData.startQuarter}`
+        const end: string = `${formData.endYear}K${formData.endQuarter}`
+        const { query: queryString } = makeQuery(start, end, formData.houseType)
 
-        const { query } = makeQuery(start, end, data.houseType)
-
+        setQuery(queryString)
+        //console.log(query)
         setLabels(query.query[3].selection.values)
+        //console.log(labels)
 
         try {
-            const propertyValues = await getPropertyValues(query)
-            setPrices(propertyValues.data.value)
-            const houseType = propertyValues.data.dimension.Boligtype.category.label[data.houseType]
+            //const propertyValues = await getPropertyValues(query)
+            await refetch()
+            if (isSuccess && !isFetching) {
+                setPrices(propertyValues.data.value)
+                const houseType = propertyValues.data.dimension.Boligtype.category.label[formData.houseType]
 
-            navigate(`/${start}-${end}/${houseType}`)
-            setIsLoading(false)
+                navigate(`/${start}-${end}/${houseType}`)
+            }
         } catch (error: any) {
-            setHasError(true)
             setErrorMessage(error.message)
+            console.log(error.message)
         }
-    }, [navigate])
-    return { isLoading, hasError, errorMessage, labels, prices, onClickSubmitHandler, onDismissErrorClick }
+
+    }, [query, navigate, refetch, propertyValues, isSuccess, isFetching])
+
+    return { isLoading, isError, isFetching, errorMessage, labels, prices, onClickSubmitHandler, onDismissErrorClick }
 }
 
 export { useAppData }
