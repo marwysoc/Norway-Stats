@@ -4,7 +4,9 @@ import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 import { Box, Button } from '@mui/material'
 import { CommentForm, Comment } from '../CommentSection'
 
-import { SavedStat, CommentSectionProps, CommentFormValues } from '../../'
+import { CommentSectionProps, CommentFormValues } from '../../'
+
+import { useSavedStatsStore } from '../../../../store/useSavedStatsStore'
 
 export const CommentSection: React.FC<CommentSectionProps> = (props) => {
     const [comment, setComment] = useState<string>(props.comment!)
@@ -12,7 +14,9 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
     const [showComment, setShowComment] = useState<boolean>(false)
     const [txtCommentBtn, setTxtCommentBtn] = useState<string>(() => comment ? 'Show Comment' : 'Add comment')
 
-    const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
+    //const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
+
+    const { savedStats } = useSavedStatsStore()
 
     const methods = useForm<CommentFormValues>({
         defaultValues: {

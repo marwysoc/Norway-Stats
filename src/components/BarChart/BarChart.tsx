@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
 import { Paper, Typography, Button, Box } from '@mui/material'
 import {
@@ -18,7 +18,9 @@ import { v4 as uuidv4 } from 'uuid'
 import { CommentSection } from './components/CommentSection'
 import { SnackBar } from '../UI'
 
-import { SavedStat, ChartProps } from './'
+import { ChartProps } from './'
+
+import { useSavedStatsStore } from '../../store/useSavedStatsStore'
 
 ChartJS.register(
     CategoryScale,
@@ -30,13 +32,10 @@ ChartJS.register(
 );
 
 export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props) {
-    const [savedStats, setSavedStats] = useState<SavedStat[]>(() => JSON.parse(localStorage.getItem('savedStats') || '[]') || [])
     const [showSnackBar, setShowSnackbar] = useState<boolean>(false);
     const [disabled, setDisabled] = useState<boolean>(false)
 
-    useEffect(() => {
-        localStorage.setItem('savedStats', JSON.stringify(savedStats))
-    }, [savedStats])
+    const { addStat } = useSavedStatsStore()
 
     const chartData = {
         labels: props.labels,
@@ -75,14 +74,14 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
     const onSaveClickHandler: () => void = () => {
         setDisabled(true)
         setShowSnackbar(true)
-        const saveStat = {
+        const statToSave = {
             id: uuidv4(),
             houseType: props.houseType,
             chartData: chartData,
-            options: options, 
+            options: options,
             statOwner: 'Marta'
         }
-        setSavedStats((prevStats) => [...prevStats, saveStat])
+        addStat(statToSave)
         setTimeout(() => {
             setShowSnackbar(false)
         }, 1500)

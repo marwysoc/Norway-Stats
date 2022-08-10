@@ -7,14 +7,17 @@ import { Typography, Box } from '@mui/material'
 import { ChartList, ChartSearcher } from '../components'
 import { GoBackButton } from '../../../components/UI'
 
+import { useSavedStatsStore } from '../../../store/useSavedStatsStore'
+
 import { ChartSearcherFormValues } from '../'
 
 import { SavedStat } from '../../../components/BarChart'
 
 export const PageLibrary: React.FC = () => {
-  let [searchParams, setSearchParams] = useSearchParams();
+  let [searchParams, setSearchParams] = useSearchParams()
 
-  const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
+  const { savedStats } = useSavedStatsStore()
+
   const [filteredStats, setFilteredStats] = useState<SavedStat[]>(savedStats)
 
   const params: any = { searchInput: '', withComments: false }
@@ -23,7 +26,7 @@ export const PageLibrary: React.FC = () => {
   const onClickGoHome = () => navigate('/')
 
   useEffect(() => {
-    if (searchParams) {
+    if (searchParams.get('withComments') && searchParams.get('searchInput')) {
       const boolWithComments = searchParams.get('withComments') === 'true' ? true : false
       filterFunc({
         searchInput: searchParams.get('searchInput') as string,
