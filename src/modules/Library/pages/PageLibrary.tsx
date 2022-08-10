@@ -8,14 +8,13 @@ import { ChartList, ChartSearcher } from '../components'
 import { GoBackButton } from '../../../components/UI'
 
 import { ChartSearcherFormValues } from '../'
-import { houses } from '../../../consts'
 
 import { SavedStat } from '../'
 
 export const PageLibrary: React.FC = () => {
   const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
   const [filteredStats, setFilteredStats] = useState<SavedStat[]>(savedStats)
-  const params: any = { houseType: '', withComments: false }
+  const params: any = { search: '', withComments: false }
 
   const navigate = useNavigate()
   const onClickGoHome = () => navigate('/')
@@ -27,25 +26,32 @@ export const PageLibrary: React.FC = () => {
     })
 
   const methods = useForm<ChartSearcherFormValues>()
-  const { handleSubmit } = methods
+  const { handleSubmit, reset } = methods
 
-  const filterStats: SubmitHandler<ChartSearcherFormValues> = (data) => {
-    const filter = houses.find((house) => house.value === data.houseType)
-    params.houseType = filter?.label
-    const filtered = savedStats.filter((stat) => stat.houseType === filter?.label)
+  const filterFunc = (filterParams: ChartSearcherFormValues): void => {
+    const filtered = savedStats.filter((stat) =>
+      stat.houseType.includes(filterParams.searchInput) ||
+      stat.chartData!.labels![0].includes(filterParams.searchInput) ||
+      stat.chartData!.labels![stat.chartData!.labels!.length - 1].includes(filterParams.searchInput)
+    )
 
-    if (data.withComments) {
-      params.withComments = data.withComments
+    if (filterParams.withComments) {
       setFilteredStats(filtered.filter((stat) => stat.hasOwnProperty('comment')))
     } else {
       setFilteredStats(filtered.filter((stat) => !stat.hasOwnProperty('comment')))
     }
+  }
+
+  const filterStats: SubmitHandler<ChartSearcherFormValues> = (data) => {
+    params.searchInput = data.searchInput
+    params.withComments = data.withComments
+    filterFunc(data)
     goFilterUrl()
   }
 
-  // TO DO clear form with reset method from react-hook-form
-  const clearFilter: () => void = () => {
+  const clearFilter = (): void => {
     setFilteredStats(savedStats)
+    reset()
     navigate('/lib')
   }
 
@@ -92,7 +98,6 @@ export const PageLibrary: React.FC = () => {
         <ChartList savedStats={filteredStats} />
       </Box>
     </Box>
-
   )
 }
 
