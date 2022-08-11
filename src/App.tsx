@@ -8,7 +8,7 @@ import { PageLibrary } from "./modules/Library";
 import { PageChart } from "./modules/PriceChart";
 import { PageForm } from "./modules/PropertyForm";
 import { useAppData } from "./useAppData";
-import { LoginForm } from "./modules/UsersProfile/components";
+import { LoginForm } from './components/LoginForm'
 
 const App: React.FC = () => {
   const {

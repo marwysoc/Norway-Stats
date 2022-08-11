@@ -1,15 +1,17 @@
 import { useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 
-import { Box, TextField, Button } from '@mui/material'
-
-import { useUsersStore } from '../../../store'
+import { Box, TextField, Button, Typography } from '@mui/material'
+import { useUsersStore } from '../store'
 
 export const LoginForm = () => {
     const { handleSubmit, register } = useForm()
+    const navigate = useNavigate()
     const usersStore = useUsersStore()
 
     const onSubmit = handleSubmit((data) => {
         usersStore.login(data.email, data.password)
+        navigate('/')
     })
 
     return (
@@ -17,9 +19,13 @@ export const LoginForm = () => {
             width: '100vw',
             height: '100vh',
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center'
         }}>
+            <Typography variant={'h6'}>
+                {'Login'}
+            </Typography>
             <form onSubmit={onSubmit}>
                 <Box
                     sx={{
