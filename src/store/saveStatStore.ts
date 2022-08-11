@@ -1,17 +1,17 @@
 import create from 'zustand'
 
-import {devtools, persist} from 'zustand/middleware'
+import { devtools, persist } from 'zustand/middleware'
 
 import { SavedStat } from '../components/BarChart'
 
 import { initialSavedStats } from './initialSavedStats'
 
-interface SavedStatsState {
+interface SavedStatsStore {
   savedStats: SavedStat[];
   addStat: (stat: SavedStat) => void;
 }
 
-export const useSavedStatsStore = create<SavedStatsState>()(
+export const useSavedStatsStore = create<SavedStatsStore>()(
   devtools(
     persist((set) => ({
       savedStats: initialSavedStats,

@@ -5,7 +5,7 @@ import { Box } from "@mui/material";
 import { BarChart } from "../../../components/BarChart";
 import { Error, GoBackButton, Loader } from "../../../components/UI";
 import { houses } from "../../../consts";
-import { usePricesStore } from "../../../store/prices-store";
+import { useGraphStore } from "../../../store";
 import { makeQuery } from "../../../utils";
 import { usePageChartData } from "../hooks";
 
@@ -15,7 +15,7 @@ export const PageChart = (props: {}) => {
     (h: { value: string; label: string }) => h.label === house
   )[0].value;
 
-  const pricesStore = usePricesStore();
+  const graphStore = useGraphStore();
 
   const { query } = makeQuery(start!, end!, houseType!);
   const {
@@ -26,8 +26,8 @@ export const PageChart = (props: {}) => {
     prices,
     onDismissErrorClick,
   } = usePageChartData(
-    pricesStore.graphData?.labels,
-    pricesStore.graphData?.prices as any,
+    graphStore.graphData?.labels,
+    graphStore.graphData?.prices as any,
     query
   );
 

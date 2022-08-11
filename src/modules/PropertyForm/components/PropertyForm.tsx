@@ -6,17 +6,17 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button } from "@mui/material";
 
 import { useSendDataMutation } from "../../../api/send-data";
-import { Input } from "../../../components/UI";
+import { Input, Loader } from "../../../components/UI";
 import { houses, quarters, years } from "../../../consts";
-import { usePricesStore } from "../../../store/prices-store";
+import { useGraphStore } from "../../../store";
 import { DescribeText, InputDescriber } from "./";
 import { makeQuery } from "./utils/makeQuery";
 
-interface Props {}
+interface Props { }
 
 export const PropertyForm = ({ ...restProps }: Props) => {
   const sendData = useSendDataMutation();
-  const pricesStore = usePricesStore();
+  const graphStore = useGraphStore();
 
   const navigate = useNavigate();
 
@@ -75,7 +75,7 @@ export const PropertyForm = ({ ...restProps }: Props) => {
       const apiData = await sendData.mutateAsync({
         data: query,
       });
-      pricesStore.setGraphData({
+      graphStore.setGraphData({
         prices: apiData.data.values,
         labels: query.query[3].selection.values,
       });
@@ -104,17 +104,34 @@ export const PropertyForm = ({ ...restProps }: Props) => {
       />
       <form onSubmit={onSubmit}>
         <InputDescriber describerTxt={"Start quarter"} />
-        <Input label={"Start year"} options={years} {...registerStartYear} />
+        <Input
+          label={"Start year"}
+          options={years}
+          errorMessage={errors.startYear && errors.startYear.message}
+          {...registerStartYear} />
         <Input
           label={"Start quarter"}
           options={quarters}
+          errorMessage={errors.startQuarter && errors.startQuarter.message}
           {...registerStartQuarter}
         />
         <InputDescriber describerTxt={"End quarter"} />
-        <Input label={"End year"} options={years} {...registerEndYear} />
-        <Input label={"End quarter"} options={quarters} />
+        <Input
+          label={"End year"}
+          options={years}
+          errorMessage={errors.endYear && errors.endYear.message}
+          {...registerEndYear} />
+        <Input
+          label={"End quarter"}
+          options={quarters}
+          errorMessage={errors.endQuarter && errors.endQuarter.message}
+          {...registerEndQuarter} />
         <InputDescriber describerTxt={"House Type"} />
-        <Input label={"House type"} options={houses} {...registerHouseType} />
+        <Input
+          label={"House type"}
+          options={houses}
+          errorMessage={errors.houseType && errors.houseType.message}
+          {...registerHouseType} />
         <Button
           variant={"contained"}
           color={"primary"}
@@ -126,9 +143,10 @@ export const PropertyForm = ({ ...restProps }: Props) => {
           }}
           disabled={isLoading}
         >
-          {isLoading ? "Loading..." : "Submit"}
+          {'GET STATISTICS'}
         </Button>
       </form>
+      {isLoading ? <Loader /> : null}
     </Box>
   );
 };

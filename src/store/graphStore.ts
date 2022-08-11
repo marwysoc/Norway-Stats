@@ -5,13 +5,13 @@ interface GraphData {
   labels: Array<string>;
 }
 
-interface PricesStore {
+interface GraphStore {
   graphData: GraphData | null;
   setGraphData: (payload: GraphData) => void;
 }
 
-export const usePricesStore = create<PricesStore>((set) => ({
+export const useGraphStore = create<GraphStore>((set) => ({
   graphData: null,
 
-  setGraphData: (payload) => set((state) => ({ ...state, graphData: payload })),
+  setGraphData: (payload) => set((state) => ({ ...state, graphData: payload }))
 }));

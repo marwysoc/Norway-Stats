@@ -6,7 +6,7 @@ import { CommentForm, Comment } from '../CommentSection'
 
 import { CommentSectionProps, CommentFormValues } from '../../'
 
-import { useSavedStatsStore } from '../../../../store/useSavedStatsStore'
+import { useSavedStatsStore } from '../../../../store/saveStatStore'
 
 export const CommentSection: React.FC<CommentSectionProps> = (props) => {
     const [comment, setComment] = useState<string>(props.comment!)

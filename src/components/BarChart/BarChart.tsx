@@ -20,7 +20,7 @@ import { SnackBar } from '../UI'
 
 import { ChartProps } from './'
 
-import { useSavedStatsStore } from '../../store/useSavedStatsStore'
+import { useSavedStatsStore } from '../../store'
 
 ChartJS.register(
     CategoryScale,

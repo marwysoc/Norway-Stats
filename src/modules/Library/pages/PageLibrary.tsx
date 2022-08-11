@@ -7,7 +7,7 @@ import { Typography, Box } from '@mui/material'
 import { ChartList, ChartSearcher } from '../components'
 import { GoBackButton } from '../../../components/UI'
 
-import { useSavedStatsStore } from '../../../store/useSavedStatsStore'
+import { useSavedStatsStore } from '../../../store/saveStatStore'
 
 import { ChartSearcherFormValues } from '../'
 
