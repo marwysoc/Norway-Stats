@@ -6,7 +6,7 @@ import Modal from '@mui/material/Modal'
 interface BasicModalProps {
     buttonLabel: string;
     modalBody: React.ReactNode;
-    printToConsole: string;
+    printToConsole?: string;
 }
 
 export const BasicModal: React.FC<BasicModalProps> = (props) => {
@@ -23,6 +23,7 @@ export const BasicModal: React.FC<BasicModalProps> = (props) => {
                 sx={{
                     margin: 2
                 }}
+                size={'small'}
                 variant={'contained'}
                 onClick={handleOpen}
             >

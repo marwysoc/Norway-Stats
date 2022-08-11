@@ -10,11 +10,13 @@ export const Menu: React.FC<MenuProps> = (props) => {
             <List>
                 <MenuLinkMobile linkTxt={'Home'} linkTo={'/'} />
                 <MenuLinkMobile linkTxt={'Library'} linkTo={'/lib'} />
+                <MenuLinkMobile linkTxt={'Profile'} linkTo={'/profile'} />
             </List>
         ) : (
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 <MenuLink linkTxt={'Home'} linkTo={'/'} />
                 <MenuLink linkTxt={'Library'} linkTo={'/lib'} />
+                <MenuLink linkTxt={'Profile'} linkTo={'/profile'} />
             </Box>
         )
     )
