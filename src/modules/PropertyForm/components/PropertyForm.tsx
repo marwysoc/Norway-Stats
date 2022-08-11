@@ -1,119 +1,136 @@
-import React from 'react'
-import { useFormContext } from 'react-hook-form'
+import React from "react";
 
-import { Box, Button } from '@mui/material'
+import { useFormContext } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-import { Input } from '../../../components/UI'
-import { DescribeText, InputDescriber } from '.'
+import { Box, Button } from "@mui/material";
 
-import { quarters, years, houses } from '../../../consts'
+import { useSendDataMutation } from "../../../api/send-data";
+import { Input } from "../../../components/UI";
+import { houses, quarters, years } from "../../../consts";
+import { usePricesStore } from "../../../store/prices-store";
+import { DescribeText, InputDescriber } from "./";
+import { makeQuery } from "./utils/makeQuery";
 
-import { PropertyFormProps } from '..'
+interface Props {}
 
-export const PropertyForm: React.FC<PropertyFormProps> = (props) => {
+export const PropertyForm = ({ ...restProps }: Props) => {
+  const sendData = useSendDataMutation();
+  const pricesStore = usePricesStore();
+
+  const navigate = useNavigate();
+
+  const VALUE_REQUIRED_ERROR = "This Value is required";
+
+  const isLoading = sendData.isLoading;
+
+  const methods = useFormContext();
   const {
-    ...otherProps
-  } = props
+    register,
+    formState: { errors },
+  } = methods;
 
-  const VALUE_REQUIRED_ERROR = "This Value is required"
-
-  const methods = useFormContext()
-  const { register, formState: { errors } } = methods
-
-  const registerStartYear = register('startYear', {
+  const registerStartYear = register("startYear", {
     required: {
       value: true,
-      message: VALUE_REQUIRED_ERROR
-    }
-  })
+      message: VALUE_REQUIRED_ERROR,
+    },
+  });
 
-  const registerStartQuarter = register('startQuarter', {
+  const registerStartQuarter = register("startQuarter", {
     required: {
       value: true,
-      message: VALUE_REQUIRED_ERROR
-    }
-  })
+      message: VALUE_REQUIRED_ERROR,
+    },
+  });
 
-  const registerEndYear = register('endYear', {
+  const registerEndYear = register("endYear", {
     required: {
       value: true,
-      message: VALUE_REQUIRED_ERROR
-    }
-  })
+      message: VALUE_REQUIRED_ERROR,
+    },
+  });
 
-  const registerEndQuarter = register('endQuarter', {
+  const registerEndQuarter = register("endQuarter", {
     required: {
       value: true,
-      message: VALUE_REQUIRED_ERROR
-    }
-  })
+      message: VALUE_REQUIRED_ERROR,
+    },
+  });
 
-  const registerHouseType = register('houseType', {
+  const registerHouseType = register("houseType", {
     required: {
       value: true,
-      message: VALUE_REQUIRED_ERROR
+      message: VALUE_REQUIRED_ERROR,
+    },
+  });
+
+  const onSubmit = methods.handleSubmit(async (values) => {
+    const start: string = `${values.startYear}K${values.startQuarter}`;
+    const end: string = `${values.endYear}K${values.endQuarter}`;
+
+    const { query } = makeQuery(start, end, values.houseType);
+
+    try {
+      const apiData = await sendData.mutateAsync({
+        data: query,
+      });
+      pricesStore.setGraphData({
+        prices: apiData.data.values,
+        labels: query.query[3].selection.values,
+      });
+
+      const houseType =
+        apiData.data.dimension.Boligtype.category.label[values.houseType];
+
+      navigate(`/${start}-${end}/${houseType}`);
+    } catch (error) {
+      console.error(error);
     }
-  })
+  });
 
   return (
     <Box
       sx={{
-        margin: '10px',
-        display: 'block',
-        width: '50%'
+        margin: "10px",
+        display: "block",
+        width: "50%",
       }}
-      {...otherProps}
+      {...restProps}
     >
-      <DescribeText primaryTxt={'Welcome to Norawy Stats'} secondaryTxt={'Select range to get statistics'} />
-      <form onSubmit={props.onSubmit}>
-        <InputDescriber describerTxt={'Start quarter'}/>
+      <DescribeText
+        primaryTxt={"Welcome to Norawy Stats"}
+        secondaryTxt={"Select range to get statistics"}
+      />
+      <form onSubmit={onSubmit}>
+        <InputDescriber describerTxt={"Start quarter"} />
+        <Input label={"Start year"} options={years} {...registerStartYear} />
         <Input
-          label={'Start year'}
-          errorMessage={errors.startYear && errors.startYear.message}
-          options={years}
-          {...registerStartYear}
-        />
-        <Input
-          label={'Start quarter'}
-          errorMessage={errors.startQuarter && errors.startQuarter.message}
+          label={"Start quarter"}
           options={quarters}
           {...registerStartQuarter}
         />
-        <InputDescriber describerTxt={'End quarter'}/>
-        <Input
-          label={'End year'}
-          errorMessage={errors.endYear && errors.endYear.message}
-          options={years}
-          {...registerEndYear}
-        />
-        <Input
-          label={'End quarter'}
-          errorMessage={errors.endQuarter && errors.endQuarter.message}
-          options={quarters}
-          {...registerEndQuarter}
-        />
-        <InputDescriber describerTxt={'House Type'}/>
-        <Input
-          label={'House type'}
-          errorMessage={errors.houseType && errors.houseType.message}
-          options={houses}
-          {...registerHouseType}
-        />
+        <InputDescriber describerTxt={"End quarter"} />
+        <Input label={"End year"} options={years} {...registerEndYear} />
+        <Input label={"End quarter"} options={quarters} />
+        <InputDescriber describerTxt={"House Type"} />
+        <Input label={"House type"} options={houses} {...registerHouseType} />
         <Button
-          variant={'contained'}
-          color={'primary'}
-          type={'submit'}
+          variant={"contained"}
+          color={"primary"}
+          type={"submit"}
           sx={{
-            width: '100%',
+            width: "100%",
             marginTop: 2,
-            marginBottom: 1
+            marginBottom: 1,
           }}
+          disabled={isLoading}
         >
-          GET STATISTICS
+          {isLoading ? "Loading..." : "Submit"}
         </Button>
-      </form >
-    </Box >
-  )
-}
+      </form>
+    </Box>
+  );
+};
 
-export default PropertyForm
+export default PropertyForm;

@@ -1,52 +1,50 @@
-import React from 'react'
-import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import React from "react";
 
-import { Box, Button } from '@mui/material'
+import { FormProvider, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
-import { PropertyForm } from '../components'
-import { PropertyFormProps, FormValues } from '../'
+import { Box, Button } from "@mui/material";
 
-export const PageForm: React.FC<PropertyFormProps> = (props) => {
+import { FormValues } from "../";
+import { PropertyForm } from "../components";
 
-  const methods = useForm<FormValues>()
-  const { handleSubmit } = methods
+interface Props {}
 
-  const navigate = useNavigate()
-  const onClickGoLibrary = () => navigate('/lib')
+export const PageForm = ({}: Props) => {
+  const methods = useForm<FormValues>();
+  const { handleSubmit } = methods;
 
-  const submitForm: SubmitHandler<FormValues> = (data) => props.onSubmit(data)
+  const navigate = useNavigate();
+  const onClickGoLibrary = () => navigate("/lib");
 
   return (
-    <Box sx={{
-      marginTop: '64px',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column'
-    }}>
-      <FormProvider
-        {...methods}
-      >
-        <PropertyForm
-          onSubmit={handleSubmit(submitForm)}
-        />
+    <Box
+      sx={{
+        marginTop: "64px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+      }}
+    >
+      <FormProvider {...methods}>
+        <PropertyForm />
       </FormProvider>
 
       <Button
         sx={{
-          width: '50%',
+          width: "50%",
           marginTop: 1,
-          marginBottom: 1
+          marginBottom: 1,
         }}
-        variant={'contained'}
-        color={'secondary'}
+        variant={"contained"}
+        color={"secondary"}
         onClick={onClickGoLibrary}
       >
         Go to library
       </Button>
     </Box>
-  )
-}
+  );
+};
 
-export default PageForm
+export default PageForm;
