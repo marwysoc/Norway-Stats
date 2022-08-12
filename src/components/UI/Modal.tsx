@@ -30,6 +30,7 @@ export const BasicModal: React.FC<BasicModalProps> = (props) => {
                 {props.buttonLabel}
             </Button>
             <Modal
+                sx={{ overflow: 'scroll' }}
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="modal-modal-title"
