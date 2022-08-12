@@ -40,10 +40,10 @@ export const PageLibrary: React.FC = () => {
 
   const filterFunc = (filterParams: ChartSearcherFormValues): void => {
     const filtered = savedStats.filter((stat) =>
-      stat.houseType!.toLowerCase().includes(filterParams.searchInput as string) ||
-      stat.chartData!.labels![0].toLowerCase().includes(filterParams.searchInput as string) ||
-      stat.chartData!.labels![stat.chartData!.labels!.length - 1].toLowerCase().includes(filterParams.searchInput as string) ||
-      stat.statOwner.toLowerCase().includes(filterParams.searchInput as string))
+      stat.houseType!.toLowerCase().includes(filterParams.searchInput?.toLowerCase() as string) ||
+      stat.chartData!.labels![0].toLowerCase().includes(filterParams.searchInput?.toLowerCase() as string) ||
+      stat.chartData!.labels![stat.chartData!.labels!.length - 1].toLowerCase().includes(filterParams.searchInput?.toLowerCase() as string) ||
+      stat.statOwner!.toLowerCase().includes(filterParams.searchInput?.toLocaleLowerCase() as string))
 
     if (filterParams.withComments) {
       setFilteredStats(filtered.filter((stat) => stat.hasOwnProperty('comment')))

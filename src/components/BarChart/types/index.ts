@@ -1,4 +1,5 @@
 import { ChartOptions } from 'chart.js'
+import { CommentData } from '../../../store/saveStatStore';
 
 export interface DataSet {
     label: string;
@@ -16,8 +17,8 @@ export interface SavedStat {
     houseType?: string;
     chartData: ChartData;
     options: ChartOptions;
-    comment?: string | undefined | null;
-    statOwner: string;
+    comment?: CommentData | undefined | null;
+    statOwner: string | undefined;
 }
 
 export interface ChartProps {
@@ -27,22 +28,15 @@ export interface ChartProps {
     end?: string;
     showSaveBtn: boolean;
     showCommentBtn: boolean;
-    comment?: string | null | undefined;
     id?: any;
     houseType: string | undefined;
     key?: React.Key | null | undefined;
 }
 
 export interface CommentSectionProps {
-    comment: string | null | undefined;
     id: any;
 }
 
 export interface CommentFormValues {
-    comment: string;
-}
-
-export interface CommentProps {
-    onEditBtnClick: () => void;
     comment: string;
 }

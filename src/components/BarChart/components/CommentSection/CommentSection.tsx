@@ -1,45 +1,20 @@
-import { useState, useEffect } from 'react'
-import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
+import { useState } from 'react'
 
 import { Box, Button } from '@mui/material'
-import { CommentForm, Comment } from '../CommentSection'
+import { CommentForm } from './CommentForm'
+import { Comment } from '../CommentSection'
 
-import { CommentSectionProps, CommentFormValues } from '../../'
+import { CommentSectionProps } from '../../'
 
-import { useSavedStatsStore } from '../../../../store/saveStatStore'
+import { useCommentToShow, useLoggedInUser } from '../../../../hooks'
 
 export const CommentSection: React.FC<CommentSectionProps> = (props) => {
-    const [comment, setComment] = useState<string>(props.comment!)
+    const commentToShow = useCommentToShow(props.id)
+    const loggedInUser = useLoggedInUser()
+
     const [showForm, setShowForm] = useState<boolean>(false)
     const [showComment, setShowComment] = useState<boolean>(false)
-    const [txtCommentBtn, setTxtCommentBtn] = useState<string>(() => comment ? 'Show Comment' : 'Add comment')
-
-    //const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
-
-    const { savedStats } = useSavedStatsStore()
-
-    const methods = useForm<CommentFormValues>({
-        defaultValues: {
-            comment: comment
-        }
-    })
-    const { handleSubmit } = methods
-
-    useEffect(() => {
-        const index = savedStats.findIndex(
-            (singleStat) => singleStat.id === props.id
-        )
-        savedStats[index].comment = comment
-        localStorage.setItem('savedStats', JSON.stringify(savedStats))
-    }, [comment, props, savedStats])
-
-    const onClickSubmit: SubmitHandler<CommentFormValues> = (data) => {
-        if (data.comment) {
-            setComment(data.comment)
-            setShowForm(false)
-            setShowComment(true)
-        }
-    }
+    const [txtCommentBtn, setTxtCommentBtn] = useState<string>(() => commentToShow ? 'Show Comment' : 'Add comment')
 
     const onEditHandler: () => void = () => {
         setShowForm(true)
@@ -55,35 +30,33 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
                 justifyContent: 'center',
                 width: '70%'
             }}>
-            <Button
-                variant={'outlined'}
-                color={'primary'}
-                disabled={showForm ? true : false}
-                onClick={() => {
-                    setShowForm(() => comment ? false : true)
-                    setTxtCommentBtn(() => !showComment ? 'Hide Comment' : 'Show comment')
-                    setShowComment(!showComment)
-                }}
-            >
-                {txtCommentBtn}
-            </Button>
             {
-                showForm && (
-                    <FormProvider
-                        {...methods}
+                txtCommentBtn === 'Add comment' && !loggedInUser ? null : (
+                    <Button
+                        variant={'outlined'}
+                        color={'primary'}
+                        disabled={showForm ? true : false}
+                        onClick={() => {
+                            setShowForm(() => commentToShow?.comment ? false : true)
+                            setTxtCommentBtn(() => !showComment ? 'Hide Comment' : 'Show comment')
+                            txtCommentBtn === 'Add comment' ? setShowComment(false) : setShowComment(!showComment)
+                        }}
                     >
-                        <CommentForm
-                            onSubmit={handleSubmit((data) => onClickSubmit(data))}
-                        />
-                    </FormProvider>
+                        {txtCommentBtn}
+                    </Button>
+                )
+            }
+            {
+                showForm && loggedInUser && (
+                    <CommentForm statId={props.id} />
                 )
             }
             {
                 showComment && (
-                    <Comment
-                        comment={comment}
-                        onEditBtnClick={onEditHandler}
-                    />
+                    <>
+                        <Comment statId={props.id} />
+                        {loggedInUser && <Button variant={'contained'} size={'small'} onClick={onEditHandler}>{'Edit comment'}</Button>}
+                    </>
                 )
             }
         </Box>

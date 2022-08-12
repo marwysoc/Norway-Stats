@@ -1,15 +1,35 @@
-import { useFormContext} from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { Button, Box, TextField } from '@mui/material'
 
-interface CommentFormProps {
-    onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+import { useSavedStatsStore } from '../../../../store'
+import { useLoggedInUser, useCommentToShow } from '../../../../hooks'
+import { CommentData } from '../../../../store/saveStatStore';
+
+interface Props {
+    statId: any;
 }
 
-export const CommentForm: React.FC<CommentFormProps> = (props) => {
-    const methods = useFormContext()
-    const { register, formState: { isDirty } } = methods
-    const registeredDisplayNameProps = register('comment')
+export const CommentForm = (props: Props) => {
+    const savedStatsStore = useSavedStatsStore()
+    const loggedInUser = useLoggedInUser()
+
+    const commentToShow = useCommentToShow(props.statId)
+
+    const { register, formState: { isDirty }, handleSubmit } = useForm({
+        defaultValues: {
+            comment: commentToShow?.comment 
+        }
+    })
+
+    const onSubmit = handleSubmit((data) => {
+        savedStatsStore.addStatComment(
+            props.statId,
+            {
+                comment: data.comment,
+                commentOwner: loggedInUser?.username ? loggedInUser.username : loggedInUser?.email
+            } as CommentData)
+    })
 
     return (
         <Box
@@ -18,7 +38,7 @@ export const CommentForm: React.FC<CommentFormProps> = (props) => {
                 margin: 1.5,
             }}
         >
-            <form onSubmit={props.onSubmit}>
+            <form onSubmit={onSubmit}>
                 <TextField
                     sx={{
                         margin: 1
@@ -27,7 +47,7 @@ export const CommentForm: React.FC<CommentFormProps> = (props) => {
                     maxRows={10}
                     variant={'standard'}
                     fullWidth
-                    {...registeredDisplayNameProps}
+                    {...register('comment')}
                 />
                 <Button
                     sx={{

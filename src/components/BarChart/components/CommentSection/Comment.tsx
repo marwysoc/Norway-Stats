@@ -1,8 +1,13 @@
-import { Typography, Box, Button } from '@mui/material'
+import { Typography, Box } from '@mui/material'
 
-import { CommentProps } from '../../types'
+import { useCommentToShow } from '../../../../hooks/'
 
-export const Comment: React.FC<CommentProps> = (props) => {
+interface Props {
+    statId: any;
+}
+
+export const Comment = (props: Props) => {
+    const commentToShow = useCommentToShow(props.statId)
 
     return (
         <Box
@@ -14,25 +19,26 @@ export const Comment: React.FC<CommentProps> = (props) => {
                 margin: 2
             }}
         >
-            <Typography
-                sx={{
-                    padding: 2
-                }}
-                component={'div'}
-            >
-                {props.comment}
-            </Typography>
-            {
-                props.comment && (
-                    <Button
-                        variant={'contained'}
-                        onClick={props.onEditBtnClick}
-                    >
-                        Edit
-                    </Button>
-                )}
+            <Box sx={{
+                display: 'flex',
+                flexDirection: 'column'
+            }}>
+                <Typography
+                    sx={{
+                        paddingTop: 2
+                    }}
+                    component={'div'}
+                >
+                    {commentToShow?.comment}
+                </Typography>
+                <Typography
+                    component={'div'}
+                    variant={'subtitle2'}
+                >
+                    {`comment added by: ${commentToShow?.commentOwner}`}
+                </Typography>
+            </Box>
         </Box>
-
     )
 }
 

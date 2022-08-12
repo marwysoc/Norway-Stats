@@ -21,6 +21,7 @@ import { SnackBar } from '../UI'
 import { ChartProps } from './'
 
 import { useSavedStatsStore } from '../../store'
+import { useLoggedInUser } from '../../hooks'
 
 ChartJS.register(
     CategoryScale,
@@ -36,6 +37,7 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
     const [disabled, setDisabled] = useState<boolean>(false)
 
     const { addStat } = useSavedStatsStore()
+    const loggedInUser = useLoggedInUser()
 
     const chartData = {
         labels: props.labels,
@@ -79,7 +81,7 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
             houseType: props.houseType,
             chartData: chartData,
             options: options,
-            statOwner: 'Marta'
+            statOwner: loggedInUser?.username ? loggedInUser?.username : loggedInUser?.email
         }
         addStat(statToSave)
         setTimeout(() => {
@@ -113,10 +115,10 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
             </Paper>
             {
                 props.showCommentBtn &&
-                <CommentSection comment={props.comment} id={props.id} />
+                <CommentSection id={props.id} />
             }
             {
-                props.showSaveBtn && (
+                props.showSaveBtn && loggedInUser && (
                     <>
                         <Button
                             variant='contained'
