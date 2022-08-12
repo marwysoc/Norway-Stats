@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form'
 
 import { useUsersStore } from '../../../store'
 
-import { TextField, Button, Box, Typography } from '@mui/material'
+import { TextField, Button, Box } from '@mui/material'
 
 export const UsernameForm = () => {
     const { register, handleSubmit } = useForm()

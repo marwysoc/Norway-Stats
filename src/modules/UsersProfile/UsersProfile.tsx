@@ -3,19 +3,25 @@ import { useNavigate } from 'react-router-dom'
 
 import { useUsersStore } from '../../store'
 
-import { Box, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import UsernameForm from './components/UsernameForm'
 import { BasicModal } from '../../components/UI'
+
+import { useLoggedInUser } from '../../hooks'
 
 export const UsersProfile = () => {
     const navigate = useNavigate()
     const usersStore = useUsersStore()
 
-    const loggedInUser = usersStore.users.filter(u => u.isLoggedIn === true)
+    const loggedInUser = useLoggedInUser()
 
     useEffect(() => {
-        loggedInUser.length === 0 && navigate('/login')
-    }, [])
+        if (loggedInUser === null) navigate('/login')
+    }, [loggedInUser, navigate])
+
+    const onLogoutClick = () => {
+        usersStore.logout()
+    }
 
     return (
         <Box sx={{
@@ -28,34 +34,43 @@ export const UsersProfile = () => {
             <Typography variant={'h6'}>
                 {'Profile'}
             </Typography>
-            <Typography sx={{ marginBottom: 1, marginTop: 2 }}>
-                <span style={{ fontWeight: 'bold', marginRight: 2 }}>{'E-mail: '}</span>
-                {loggedInUser[0].email}
-            </Typography>
-            <Box sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center'
-            }}>
-                <Typography>
-                    <span style={{ fontWeight: 'bold', marginRight: 2 }}>{'Username: '}</span>
-                    {loggedInUser[0].username ? loggedInUser[0].username : '-'}
-                </Typography>
-                <BasicModal
-                    buttonLabel={'Edit'}
-                    modalBody={
+            {
+                loggedInUser && (
+                    <>
+                        <Typography sx={{ marginBottom: 1, marginTop: 2 }}>
+                            <span style={{ fontWeight: 'bold', marginRight: 2 }}>{'E-mail: '}</span>
+                            {loggedInUser.email}
+                        </Typography>
                         <Box sx={{
                             display: 'flex',
-                            flexDirection: 'column'
+                            justifyContent: 'center',
+                            alignItems: 'center'
                         }}>
-                            <Typography variant={'subtitle1'}>
-                                {'Edit username'}
+                            <Typography>
+                                <span style={{ fontWeight: 'bold', marginRight: 2 }}>{'Username: '}</span>
+                                {loggedInUser.username ? loggedInUser.username : '-'}
                             </Typography>
-                            <UsernameForm />
+                            <BasicModal
+                                buttonLabel={'Edit'}
+                                modalBody={
+                                    <Box sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column'
+                                    }}>
+                                        <Typography variant={'subtitle1'}>
+                                            {'Edit username'}
+                                        </Typography>
+                                        <UsernameForm />
+                                    </Box>
+                                }
+                            />
                         </Box>
-                    }
-                />
-            </Box>
+                    </>
+                )
+            }
+            <Button variant={'contained'} onClick={onLogoutClick}>
+                {'Logout'}
+            </Button>
         </Box>
 
     )

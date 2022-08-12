@@ -2,8 +2,10 @@ import create from 'zustand'
 
 import { devtools, persist } from 'zustand/middleware'
 
+import { v4 as uuidv4 } from 'uuid'
+
 export interface User {
-    id: string | number,
+    id: any;
     email: string;
     password: string;
     username?: string;
@@ -20,13 +22,13 @@ interface UsersStore {
 
 const initialUsers: User[] = [
     {
-        id: Math.floor(Math.random() * 100),
+        id: uuidv4(),
         email: 'admin1@admin.pl',
         password: 'admin1',
         isLoggedIn: false
     },
     {
-        id: Math.floor(Math.random() * 100),
+        id: uuidv4(),
         email: 'admin2@admin.pl',
         password: 'admin2',
         isLoggedIn: false
@@ -41,8 +43,8 @@ export const useUsersStore = create<UsersStore>()(
             addUsername: (id, username) => set((state) => ({
                 ...state,
                 users: state.users.map((user) =>
-                    user.id === id
-                        ? ({ ...user, username: username } as User)
+                    user.id === id 
+                        ? ({ ...user, username: username })
                         : user
                 )
             })),
