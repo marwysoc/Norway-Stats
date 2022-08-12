@@ -6,10 +6,11 @@ import { Comment } from '../CommentSection'
 
 import { CommentSectionProps } from '../../'
 
-import { useCommentToShow } from '../../../../hooks'
+import { useCommentToShow, useLoggedInUser } from '../../../../hooks'
 
 export const CommentSection: React.FC<CommentSectionProps> = (props) => {
     const commentToShow = useCommentToShow(props.id)
+    const loggedInUser = useLoggedInUser()
 
     const [showForm, setShowForm] = useState<boolean>(false)
     const [showComment, setShowComment] = useState<boolean>(false)
@@ -29,20 +30,24 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
                 justifyContent: 'center',
                 width: '70%'
             }}>
-            <Button
-                variant={'outlined'}
-                color={'primary'}
-                disabled={showForm ? true : false}
-                onClick={() => {
-                    setShowForm(() => commentToShow?.comment ? false : true)
-                    setTxtCommentBtn(() => !showComment ? 'Hide Comment' : 'Show comment')
-                    txtCommentBtn === 'Add comment' ? setShowComment(false) : setShowComment(!showComment)
-                }}
-            >
-                {txtCommentBtn}
-            </Button>
             {
-                showForm && (
+                txtCommentBtn === 'Add comment' && !loggedInUser ? null : (
+                    <Button
+                        variant={'outlined'}
+                        color={'primary'}
+                        disabled={showForm ? true : false}
+                        onClick={() => {
+                            setShowForm(() => commentToShow?.comment ? false : true)
+                            setTxtCommentBtn(() => !showComment ? 'Hide Comment' : 'Show comment')
+                            txtCommentBtn === 'Add comment' ? setShowComment(false) : setShowComment(!showComment)
+                        }}
+                    >
+                        {txtCommentBtn}
+                    </Button>
+                )
+            }
+            {
+                showForm && loggedInUser && (
                     <CommentForm statId={props.id} />
                 )
             }
@@ -50,7 +55,7 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
                 showComment && (
                     <>
                         <Comment statId={props.id} />
-                        <Button variant={'contained'} size={'small'} onClick={onEditHandler}>{'Edit comment'}</Button>
+                        {loggedInUser && <Button variant={'contained'} size={'small'} onClick={onEditHandler}>{'Edit comment'}</Button>}
                     </>
                 )
             }
