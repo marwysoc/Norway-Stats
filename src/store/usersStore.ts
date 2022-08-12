@@ -15,7 +15,7 @@ export interface User {
 interface UsersStore {
     users: User[];
     addNewUser: (user: User) => void;
-    addUsername: (id: (string | number), username: string) => void;
+    addUsername: (id: any, username: string) => void;
     login: (email: string, password: string) => void;
     logout: () => void;
 }
@@ -39,7 +39,7 @@ export const useUsersStore = create<UsersStore>()(
     devtools(
         persist((set) => ({
             users: initialUsers,
-            addNewUser: (user) => set((state) => ({ ...state, users: { ...state.users, user } })),
+            addNewUser: (user) => set((state) => ({ ...state, users: [...state.users, user] })),
             addUsername: (id, username) => set((state) => ({
                 ...state,
                 users: state.users.map((user) =>
