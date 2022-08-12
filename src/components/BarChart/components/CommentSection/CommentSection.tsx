@@ -1,45 +1,19 @@
-import { useState, useEffect } from 'react'
-import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
+import { useState } from 'react'
 
 import { Box, Button } from '@mui/material'
-import { CommentForm, Comment } from '../CommentSection'
+import { CommentForm } from './CommentForm'
+import { Comment } from '../CommentSection'
 
-import { CommentSectionProps, CommentFormValues } from '../../'
+import { CommentSectionProps } from '../../'
 
-import { useSavedStatsStore } from '../../../../store/saveStatStore'
+import { useCommentToShow } from '../../../../hooks'
 
 export const CommentSection: React.FC<CommentSectionProps> = (props) => {
-    const [comment, setComment] = useState<string>(props.comment!)
+    const commentToShow = useCommentToShow(props.id)
+
     const [showForm, setShowForm] = useState<boolean>(false)
     const [showComment, setShowComment] = useState<boolean>(false)
-    const [txtCommentBtn, setTxtCommentBtn] = useState<string>(() => comment ? 'Show Comment' : 'Add comment')
-
-    //const savedStats: SavedStat[] = JSON.parse(localStorage.getItem('savedStats') || '[]') || []
-
-    const { savedStats } = useSavedStatsStore()
-
-    const methods = useForm<CommentFormValues>({
-        defaultValues: {
-            comment: comment
-        }
-    })
-    const { handleSubmit } = methods
-
-    useEffect(() => {
-        const index = savedStats.findIndex(
-            (singleStat) => singleStat.id === props.id
-        )
-        savedStats[index].comment = comment
-        localStorage.setItem('savedStats', JSON.stringify(savedStats))
-    }, [comment, props, savedStats])
-
-    const onClickSubmit: SubmitHandler<CommentFormValues> = (data) => {
-        if (data.comment) {
-            setComment(data.comment)
-            setShowForm(false)
-            setShowComment(true)
-        }
-    }
+    const [txtCommentBtn, setTxtCommentBtn] = useState<string>(() => commentToShow ? 'Show Comment' : 'Add comment')
 
     const onEditHandler: () => void = () => {
         setShowForm(true)
@@ -60,30 +34,24 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
                 color={'primary'}
                 disabled={showForm ? true : false}
                 onClick={() => {
-                    setShowForm(() => comment ? false : true)
+                    setShowForm(() => commentToShow?.comment ? false : true)
                     setTxtCommentBtn(() => !showComment ? 'Hide Comment' : 'Show comment')
-                    setShowComment(!showComment)
+                    txtCommentBtn === 'Add comment' ? setShowComment(false) : setShowComment(!showComment)
                 }}
             >
                 {txtCommentBtn}
             </Button>
             {
                 showForm && (
-                    <FormProvider
-                        {...methods}
-                    >
-                        <CommentForm
-                            onSubmit={handleSubmit((data) => onClickSubmit(data))}
-                        />
-                    </FormProvider>
+                    <CommentForm statId={props.id} />
                 )
             }
             {
                 showComment && (
-                    <Comment
-                        comment={comment}
-                        onEditBtnClick={onEditHandler}
-                    />
+                    <>
+                        <Comment statId={props.id} />
+                        <Button variant={'contained'} size={'small'} onClick={onEditHandler}>{'Edit comment'}</Button>
+                    </>
                 )
             }
         </Box>

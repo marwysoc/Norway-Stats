@@ -81,7 +81,7 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
             houseType: props.houseType,
             chartData: chartData,
             options: options,
-            statOwner: 'Marta'
+            statOwner: loggedInUser?.username ? loggedInUser?.username : loggedInUser?.email
         }
         addStat(statToSave)
         setTimeout(() => {
@@ -115,7 +115,7 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
             </Paper>
             {
                 props.showCommentBtn &&
-                <CommentSection comment={props.comment} id={props.id} />
+                <CommentSection id={props.id} />
             }
             {
                 props.showSaveBtn && loggedInUser && (

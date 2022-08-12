@@ -33,12 +33,11 @@ export const ChartlistItem: React.FC<ChartListItemProps> = (props) => {
                             end={props.item.chartData!.labels![props.item.chartData!.labels!.length - 1]}
                             showSaveBtn={false}
                             showCommentBtn={true}
-                            comment={props.item.comment ? props.item.comment : null}
                             id={props.item.id}
                         />
                     } />
             </TableCell>
-            <TableCell align='center'>{'Marta'}</TableCell>
+            <TableCell align='center'>{props.item.statOwner}</TableCell>
         </TableRow>
     )
 }
