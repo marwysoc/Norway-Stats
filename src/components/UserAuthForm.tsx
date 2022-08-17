@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
@@ -11,6 +12,8 @@ interface Props {
 }
 
 export const UserAuthForm = (props: Props) => {
+    const [errorMessage, setErrorMessage] = useState<string | null>(null)
+
     const { handleSubmit, register } = useForm()
     const navigate = useNavigate()
     const usersStore = useUsersStore()
@@ -20,8 +23,11 @@ export const UserAuthForm = (props: Props) => {
 
     const onSubmit = handleSubmit((data) => {
         if (props.submitButtonTxt === 'LOGIN') {
-            usersStore.login(data.email, data.password)
-            navigate('/')
+            if (usersStore.users.find(user => user.email === data.email && user.password === data.password) !== undefined) {
+                setErrorMessage(null)
+                usersStore.login(data.email, data.password)
+                navigate('/')
+            } else setErrorMessage('Invalid email or password')
         }
         if (props.submitButtonTxt === 'REGISTER') {
             usersStore.addNewUser({
@@ -67,6 +73,9 @@ export const UserAuthForm = (props: Props) => {
                         fullWidth
                         {...register('password')}
                     />
+                    {
+                        errorMessage ? <p style={{ color: 'red' }}>{errorMessage}</p> : null
+                    }
                     <Button
                         variant={'contained'}
                         type={"submit"}>
