@@ -14,7 +14,9 @@ interface Props {
 export const UserAuthForm = (props: Props) => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-    const { handleSubmit, register } = useForm()
+    const VALUE_REQUIRED_ERROR = 'This Value is required'
+
+    const { handleSubmit, register, formState: { errors } } = useForm()
     const navigate = useNavigate()
     const usersStore = useUsersStore()
 
@@ -63,7 +65,14 @@ export const UserAuthForm = (props: Props) => {
                         label={'E-mail'}
                         variant={'standard'}
                         fullWidth
-                        {...register('email')}
+                        error={errors.email ? true : false}
+                        helperText={errors.email && errors.email.message}
+                        {...register('email', {
+                            required: {
+                                value: true,
+                                message: VALUE_REQUIRED_ERROR,
+                            }
+                        })}
                     />
                     <TextField
                         sx={{ marginTop: 3, marginBottom: 3 }}
@@ -71,14 +80,21 @@ export const UserAuthForm = (props: Props) => {
                         variant={'standard'}
                         type={'password'}
                         fullWidth
-                        {...register('password')}
+                        error={errors.password ? true : false}
+                        helperText={errors.password && errors.password.message}
+                        {...register('password', {
+                            required: {
+                                value: true,
+                                message: VALUE_REQUIRED_ERROR,
+                            }
+                        })}
                     />
                     {
                         errorMessage ? <p style={{ color: 'red' }}>{errorMessage}</p> : null
                     }
                     <Button
                         variant={'contained'}
-                        type={"submit"}>
+                        type={'submit'}>
                         {props.submitButtonTxt}
                     </Button>
                     {
