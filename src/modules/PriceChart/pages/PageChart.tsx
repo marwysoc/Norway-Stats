@@ -1,63 +1,72 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { Box } from "@mui/material";
+import { Box } from '@mui/material'
 
-import { BarChart } from "../../../components/BarChart";
-import { Error, GoBackButton, Loader } from "../../../components/UI";
-import { houses } from "../../../consts";
-import { useGraphStore } from "../../../store";
-import { makeQuery } from "../../../utils";
-import { usePageChartData } from "../hooks";
+import { BarChart } from '../../../components/BarChart'
+import { GoBackButton, Loader } from '../../../components/UI'
+import { houses } from '../../../consts'
+import { useGraphStore } from '../../../store'
+import { makeQuery } from '../../../utils'
+import { useSendDataMutation } from '../../../api/send-data'
 
 export const PageChart = (props: {}) => {
-  const { start, end, house } = useParams();
+  const { start, end, house } = useParams()
+  const sendData = useSendDataMutation()
+  const graphStore = useGraphStore()
+
   const houseType = houses.filter(
     (h: { value: string; label: string }) => h.label === house
-  )[0].value;
+  )[0].value
 
-  const graphStore = useGraphStore();
+  const { query } = makeQuery(start!, end!, houseType!)
 
-  const { query } = makeQuery(start!, end!, houseType!);
-  const {
-    isLoading,
-    hasError,
-    errorMessage,
-    labels,
-    prices,
-    onDismissErrorClick,
-  } = usePageChartData(
-    graphStore.graphData?.labels,
-    graphStore.graphData?.prices as any,
-    query
-  );
+  useEffect(() => {
+    if (graphStore.graphData?.prices === undefined) {
+      async function fetchData() {
+        try {
+          const apiData = await sendData.mutateAsync({
+            data: query,
+          })
+          graphStore.setGraphData({
+            prices: apiData.data.value,
+            labels: query.query[3].selection.values,
+          })
+        } catch (error) {
+          console.error(error);
+        }
+      }
+      fetchData()
+    }
+  }, [])
 
   const navigate = useNavigate();
-  const onClickGoHome = () => navigate("/");
+  const onClickGoHome = () => navigate('/');
 
   return (
     <>
       <Box
         sx={{
-          width: "100vw",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          marginTop: "68px",
-          marginBottom: "64px",
+          width: '100vw',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '68px',
+          marginBottom: '64px',
         }}
       >
         <GoBackButton
           sx={{
-            alignSelf: "flex-start",
+            alignSelf: 'flex-start',
             marginLeft: 1.5,
           }}
           onClickGoBack={onClickGoHome}
-          label={"Back to form"}
+          label={'Back to form'}
         />
         <BarChart
-          labels={labels}
-          dataSet={prices}
+          labels={graphStore.graphData?.labels}
+          dataSet={graphStore.graphData?.prices}
           houseType={house}
           start={start}
           end={end}
@@ -65,14 +74,7 @@ export const PageChart = (props: {}) => {
           showCommentBtn={false}
         />
       </Box>
-      {isLoading ? <Loader /> : null}
-      {hasError ? (
-        <Error
-          buttonLabel={"Go back"}
-          errorMessage={`Error has occured: ${errorMessage}`}
-          onButtonClick={onDismissErrorClick}
-        />
-      ) : null}
+      {sendData.isLoading ? <Loader /> : null}
     </>
   );
 };

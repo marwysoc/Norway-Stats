@@ -1,7 +1,7 @@
 import create from "zustand";
 
 interface GraphData {
-  prices: Array<string>;
+  prices: Array<number>;
   labels: Array<string>;
 }
 
