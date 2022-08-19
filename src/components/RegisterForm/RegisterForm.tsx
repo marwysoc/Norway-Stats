@@ -3,35 +3,27 @@ import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 
 import { Box, TextField, Button, Typography } from '@mui/material'
-import { useUsersStore } from '../store'
+import { useUsersStore } from '../../store'
 
 import { v4 as uuidv4 } from 'uuid'
 
-interface Props {
-    submitButtonTxt: string;
-}
-
-export const UserAuthForm = (props: Props) => {
+export const RegisterForm = () => {
     const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-    const VALUE_REQUIRED_ERROR = 'This Value is required'
+    const EMAIL_REQUIRED_ERROR = 'Email is required'
+    const PASSWORD_REQUIRED_ERROR = 'Password is required'
+    const REPEAT_PASSWORD_VALIDATION_ERROR = 'Passwords must be the same'
 
-    const { handleSubmit, register, formState: { errors } } = useForm()
+    const { handleSubmit, register, formState: { errors }, watch } = useForm()
+    const password = watch('password')
+
     const navigate = useNavigate()
     const usersStore = useUsersStore()
 
-    const onRegisterClick = () => navigate('/register')
     const onBackToLoginClick = () => navigate('/login')
 
     const onSubmit = handleSubmit((data) => {
-        if (props.submitButtonTxt === 'LOGIN') {
-            if (usersStore.users.find(user => user.email === data.email && user.password === data.password) !== undefined) {
-                setErrorMessage(null)
-                usersStore.login(data.email, data.password)
-                navigate('/')
-            } else setErrorMessage('Invalid email or password')
-        }
-        if (props.submitButtonTxt === 'REGISTER') {
+        if (usersStore.users.find(user => user.email === data.email) === undefined) {
             usersStore.addNewUser({
                 id: uuidv4(),
                 email: data.email,
@@ -39,7 +31,7 @@ export const UserAuthForm = (props: Props) => {
                 isLoggedIn: true
             })
             navigate('/profile')
-        }
+        } else setErrorMessage(`User with email ${data.email} already exists, try to login`)
     })
 
     return (
@@ -52,7 +44,7 @@ export const UserAuthForm = (props: Props) => {
             alignItems: 'center'
         }}>
             <Typography variant={'h6'}>
-                {props.submitButtonTxt === 'LOGIN' ? 'LOGIN' : 'REGISTER'}
+                {'REGISTER'}
             </Typography>
             <form onSubmit={onSubmit}>
                 <Box
@@ -70,12 +62,12 @@ export const UserAuthForm = (props: Props) => {
                         {...register('email', {
                             required: {
                                 value: true,
-                                message: VALUE_REQUIRED_ERROR,
+                                message: EMAIL_REQUIRED_ERROR,
                             }
                         })}
                     />
                     <TextField
-                        sx={{ marginTop: 3, marginBottom: 3 }}
+                        sx={{ marginTop: 3 }}
                         label={'Password'}
                         variant={'standard'}
                         type={'password'}
@@ -85,8 +77,24 @@ export const UserAuthForm = (props: Props) => {
                         {...register('password', {
                             required: {
                                 value: true,
-                                message: VALUE_REQUIRED_ERROR,
+                                message: PASSWORD_REQUIRED_ERROR,
                             }
+                        })}
+                    />
+                    <TextField
+                        sx={{ marginTop: 3, marginBottom: 3 }}
+                        label={'Reapeat password'}
+                        variant={'standard'}
+                        type={'password'}
+                        fullWidth
+                        error={errors.repeatPassword ? true : false}
+                        helperText={errors.repeatPassword && errors.repeatPassword.message}
+                        {...register('repeatPassword', {
+                            required: {
+                                value: true,
+                                message: PASSWORD_REQUIRED_ERROR,
+                            },
+                            validate: (repeatPassword) => repeatPassword === password || REPEAT_PASSWORD_VALIDATION_ERROR
                         })}
                     />
                     {
@@ -95,30 +103,20 @@ export const UserAuthForm = (props: Props) => {
                     <Button
                         variant={'contained'}
                         type={'submit'}>
-                        {props.submitButtonTxt}
+                        {'REGISTER'}
                     </Button>
-                    {
-                        props.submitButtonTxt === 'LOGIN' && <Button
-                            sx={{ marginTop: 2 }}
-                            variant={'contained'}
-                            color={'secondary'}
-                            onClick={onRegisterClick}>
-                            {'REGISTER'}
-                        </Button>
-                    }
-                    {
-                        props.submitButtonTxt === 'REGISTER' && <Button
-                            sx={{ marginTop: 2 }}
-                            variant={'contained'}
-                            color={'secondary'}
-                            onClick={onBackToLoginClick}>
-                            {'BACK TO LOGIN'}
-                        </Button>
-                    }
+                    <Button
+                        sx={{ marginTop: 2 }}
+                        variant={'contained'}
+                        color={'secondary'}
+                        onClick={onBackToLoginClick}>
+                        {'BACK TO LOGIN'}
+                    </Button>
+
                 </Box>
             </form>
         </Box>
     )
 }
 
-export default UserAuthForm
+export default RegisterForm

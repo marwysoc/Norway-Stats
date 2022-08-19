@@ -6,8 +6,9 @@ import { Header } from './components/Header'
 import { PageLibrary } from './modules/Library'
 import { PageChart } from './modules/PriceChart'
 import { PageForm } from './modules/PropertyForm'
-import UserAuthForm from './components/UserAuthForm'
 import UsersProfile from './modules/UsersProfile/UsersProfile'
+import LoginForm from './components/LoginForm/LoginForm'
+import RegisterForm from './components/RegisterForm/RegisterForm'
 
 const App: React.FC = () => {
   return (
@@ -17,8 +18,8 @@ const App: React.FC = () => {
         <Route path={'*'} element={<PageForm />} />
         <Route path={'/lib'} element={<PageLibrary />} />
         <Route path={'/:start-:end/:house'} element={<PageChart />} />
-        <Route path={'/login'} element={<UserAuthForm submitButtonTxt={'LOGIN'}/>} />
-        <Route path={'/register'} element={<UserAuthForm submitButtonTxt={'REGISTER'}/>} />
+        <Route path={'/login'} element={<LoginForm />} />
+        <Route path={'/register'} element={<RegisterForm />} />
         <Route path={'/profile'} element={<UsersProfile />} />
       </Routes>
     </div>
