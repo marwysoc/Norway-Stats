@@ -46,7 +46,7 @@ export const UsersProfile = () => {
                             justifyContent: 'center',
                             alignItems: 'center'
                         }}>
-                            <Typography>
+                            <Typography data-cy={'field__username'}>
                                 <span style={{ fontWeight: 'bold', marginRight: 2 }}>{'Username: '}</span>
                                 {loggedInUser.username ? loggedInUser.username : '-'}
                             </Typography>

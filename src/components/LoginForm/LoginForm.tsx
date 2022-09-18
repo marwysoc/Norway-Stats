@@ -46,6 +46,7 @@ export const LoginForm = () => {
                         flexDirection: 'column'
                     }}>
                     <TextField
+                        data-cy={'input__email'}
                         label={'E-mail'}
                         variant={'standard'}
                         fullWidth
@@ -59,6 +60,7 @@ export const LoginForm = () => {
                         })}
                     />
                     <TextField
+                        data-cy={'input__password'}
                         sx={{ marginTop: 3, marginBottom: 3 }}
                         label={'Password'}
                         variant={'standard'}
@@ -77,11 +79,13 @@ export const LoginForm = () => {
                         errorMessage ? <p style={{ color: 'red' }}>{errorMessage}</p> : null
                     }
                     <Button
+                        data-cy={'button__login'}
                         variant={'contained'}
                         type={'submit'}>
                         {'LOGIN'}
                     </Button>
                     <Button
+                        data-cy={'button__register'}
                         sx={{ marginTop: 2 }}
                         variant={'contained'}
                         color={'secondary'}

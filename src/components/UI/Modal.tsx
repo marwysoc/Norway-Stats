@@ -20,6 +20,7 @@ export const BasicModal: React.FC<BasicModalProps> = (props) => {
     return (
         <Box>
             <Button
+                data-cy={'button__open-modal'}
                 sx={{
                     margin: 2
                 }}

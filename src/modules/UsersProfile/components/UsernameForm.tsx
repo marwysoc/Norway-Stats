@@ -17,6 +17,7 @@ export const UsernameForm = () => {
         <Box sx={{ width: '300px' }}>
             <form onSubmit={onSubmit}>
                 <TextField
+                    data-cy={'input__username'}
                     sx={{
                         margin: 1
                     }}
@@ -24,7 +25,7 @@ export const UsernameForm = () => {
                     fullWidth
                     {...register('username')}
                 />
-                <Button variant={'contained'} type={'submit'}>
+                <Button data-cy={'button__save-username'} variant={'contained'} type={'submit'}>
                     {'Save'}
                 </Button>
             </form>
