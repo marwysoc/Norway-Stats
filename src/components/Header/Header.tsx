@@ -18,6 +18,7 @@ export const Header: React.FC = () => {
             <AppBar component='nav' color={'primary'}>
                 <Toolbar>
                     <IconButton
+                        data-cy={'button__open-drawer'}
                         color='inherit'
                         aria-label='open drawer'
                         edge='start'

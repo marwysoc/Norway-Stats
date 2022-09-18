@@ -8,7 +8,7 @@ const drawerWidth = 240
 
 export const DrawerBar: React.FC<DrawerProps> = (props) => {
     const drawer = (
-        <Box onClick={props.handleToggle} sx={{ textAlign: 'center' }}>
+        <Box data-cy={'drawer'} onClick={props.handleToggle} sx={{ textAlign: 'center' }}>
             <Typography variant='h6' sx={{ my: 2 }}>
                 Norway Stats
             </Typography>

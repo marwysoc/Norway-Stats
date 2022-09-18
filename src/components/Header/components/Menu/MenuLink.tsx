@@ -4,7 +4,7 @@ import { MenuLinkProps } from '../../'
 
 export const MenuLinkMobile: React.FC<MenuLinkProps> = (props) => {
     return (
-        <Button sx={{ color: '#fff' }} href={props.linkTo}>
+        <Button data-cy={'desktop-menu-link'} sx={{ color: '#fff' }} href={props.linkTo}>
             {props.linkTxt}
         </Button>
     )
