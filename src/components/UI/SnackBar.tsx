@@ -11,10 +11,12 @@ export const SnackBar: React.FC<SnackBarProps> = (props) => {
     return (
         <div>
             <Snackbar
+                data-cy={'snackbar'}
                 open={props.isOpen}
                 autoHideDuration={6000}
             >
                 <MuiAlert
+                    data-cy={'snackbar-message'}
                     elevation={6}
                     variant='filled'
                     severity='success'

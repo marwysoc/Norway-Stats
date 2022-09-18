@@ -121,6 +121,7 @@ export const BarChart: React.FC<ChartProps> = React.memo(function BarChart(props
                 props.showSaveBtn && loggedInUser && (
                     <>
                         <Button
+                            data-cy={'button__save-stats'}
                             variant='contained'
                             color='secondary'
                             disabled={disabled}
