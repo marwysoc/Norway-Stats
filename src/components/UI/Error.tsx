@@ -27,8 +27,9 @@ export const Error: React.FC<ErrorProps> = (props) => {
                     display: 'flex',
                     flexDirection: 'column'
                 }}>
-                <Typography>{props.errorMessage}</Typography>
+                <Typography data-cy={'button__error-message'}>{props.errorMessage}</Typography>
                 <Button
+                    data-cy={'button__error-dismiss'}
                     onClick={props.onButtonClick}
                     variant={'contained'}
                     color={'primary'}
