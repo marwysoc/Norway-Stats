@@ -31,6 +31,7 @@ export const BasicModal: React.FC<BasicModalProps> = (props) => {
                 {props.buttonLabel}
             </Button>
             <Modal
+                data-cy={'modal'}
                 sx={{ overflow: 'scroll' }}
                 open={open}
                 onClose={handleClose}
@@ -38,6 +39,7 @@ export const BasicModal: React.FC<BasicModalProps> = (props) => {
                 aria-describedby="modal-modal-description"
             >
                 <Box
+                    data-cy={'modal-body'}
                     sx={{
                         position: 'absolute' as 'absolute',
                         top: '50%',
