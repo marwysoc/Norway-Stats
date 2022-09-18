@@ -25,6 +25,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref)
       {...otherProps}
     >
       <TextField
+        data-cy={'input__select'}
         select
         fullWidth
         defaultValue={''}
@@ -34,7 +35,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>((props, ref)
         {...otherProps}
       >
         {props.options.map((option) => (
-          <MenuItem key={option.value} value={option.value}>
+          <MenuItem data-cy={'select__option'} key={option.value} value={option.value}>
             {option.label}
           </MenuItem>
         ))}
