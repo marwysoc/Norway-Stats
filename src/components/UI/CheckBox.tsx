@@ -24,10 +24,12 @@ export const CheckBox = React.forwardRef<HTMLInputElement, CheckBoxProps>((props
                 <FormControlLabel
                     control={
                         <Checkbox
+                            data-cy={'checkbox'}
                             defaultChecked={false}
                             color={'primary'}
                         />
                     }
+                    data-cy={'label__checkbox'}
                     label={props.label}
                     inputRef={ref}
                     {...otherProps}
