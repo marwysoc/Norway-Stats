@@ -54,6 +54,7 @@ export const RegisterForm = () => {
                         flexDirection: 'column'
                     }}>
                     <TextField
+                        data-cy={'input__register-email'}
                         label={'E-mail'}
                         variant={'standard'}
                         fullWidth
@@ -67,6 +68,7 @@ export const RegisterForm = () => {
                         })}
                     />
                     <TextField
+                        data-cy={'input__register-password'}
                         sx={{ marginTop: 3 }}
                         label={'Password'}
                         variant={'standard'}
@@ -82,6 +84,7 @@ export const RegisterForm = () => {
                         })}
                     />
                     <TextField
+                        data-cy={'input__register-password-repeat'}
                         sx={{ marginTop: 3, marginBottom: 3 }}
                         label={'Reapeat password'}
                         variant={'standard'}
@@ -101,18 +104,19 @@ export const RegisterForm = () => {
                         errorMessage ? <p style={{ color: 'red' }}>{errorMessage}</p> : null
                     }
                     <Button
+                        data-cy={'button__register-btn'}
                         variant={'contained'}
                         type={'submit'}>
                         {'REGISTER'}
                     </Button>
                     <Button
+                        data-cy={'button__back-to-login'}
                         sx={{ marginTop: 2 }}
                         variant={'contained'}
                         color={'secondary'}
                         onClick={onBackToLoginClick}>
                         {'BACK TO LOGIN'}
                     </Button>
-
                 </Box>
             </form>
         </Box>
