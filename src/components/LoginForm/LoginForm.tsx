@@ -38,7 +38,7 @@ export const LoginForm = () => {
             <Typography variant={'h6'}>
                 {'LOGIN'}
             </Typography>
-            <form onSubmit={onSubmit}>
+            <form data-cy={'form__login'} onSubmit={onSubmit}>
                 <Box
                     sx={{
                         width: '300px',
