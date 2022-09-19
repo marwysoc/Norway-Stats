@@ -105,11 +105,13 @@ export const PropertyForm = ({ ...restProps }: Props) => {
       <form onSubmit={onSubmit}>
         <InputDescriber describerTxt={"Start quarter"} />
         <Input
+          data-cy={'start-year'}
           label={"Start year"}
           options={years}
           errorMessage={errors.startYear && errors.startYear.message}
           {...registerStartYear} />
         <Input
+          data-cy={'start-quarter'}
           label={"Start quarter"}
           options={quarters}
           errorMessage={errors.startQuarter && errors.startQuarter.message}
@@ -117,22 +119,26 @@ export const PropertyForm = ({ ...restProps }: Props) => {
         />
         <InputDescriber describerTxt={"End quarter"} />
         <Input
+          data-cy={'end-year'}
           label={"End year"}
           options={years}
           errorMessage={errors.endYear && errors.endYear.message}
           {...registerEndYear} />
         <Input
+          data-cy={'end-quarter'}
           label={"End quarter"}
           options={quarters}
           errorMessage={errors.endQuarter && errors.endQuarter.message}
           {...registerEndQuarter} />
         <InputDescriber describerTxt={"House Type"} />
         <Input
+          data-cy={'house-type'}
           label={"House type"}
           options={houses}
           errorMessage={errors.houseType && errors.houseType.message}
           {...registerHouseType} />
         <Button
+          data-cy={'button__get-stats'}
           variant={"contained"}
           color={"primary"}
           type={"submit"}

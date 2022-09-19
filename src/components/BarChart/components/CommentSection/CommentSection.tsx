@@ -33,6 +33,7 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
             {
                 txtCommentBtn === 'Add comment' && !loggedInUser ? null : (
                     <Button
+                        data-cy={'button__comment-section'}
                         variant={'outlined'}
                         color={'primary'}
                         disabled={showForm ? true : false}
@@ -55,7 +56,7 @@ export const CommentSection: React.FC<CommentSectionProps> = (props) => {
                 showComment && (
                     <>
                         <Comment statId={props.id} />
-                        {loggedInUser && <Button variant={'contained'} size={'small'} onClick={onEditHandler}>{'Edit comment'}</Button>}
+                        {loggedInUser && <Button data-cy={'button__edit-comment'} variant={'contained'} size={'small'} onClick={onEditHandler}>{'Edit comment'}</Button>}
                     </>
                 )
             }

@@ -68,7 +68,7 @@ export const UsersProfile = () => {
                     </>
                 )
             }
-            <Button variant={'contained'} onClick={onLogoutClick}>
+            <Button data-cy={'button__logout'} variant={'contained'} onClick={onLogoutClick}>
                 {'Logout'}
             </Button>
         </Box>

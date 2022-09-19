@@ -24,6 +24,7 @@ export const Comment = (props: Props) => {
                 flexDirection: 'column'
             }}>
                 <Typography
+                    data-cy={'field__comment'}
                     sx={{
                         paddingTop: 2
                     }}
@@ -32,6 +33,7 @@ export const Comment = (props: Props) => {
                     {commentToShow?.comment}
                 </Typography>
                 <Typography
+                    data-cy={'field__comment-owner'}
                     component={'div'}
                     variant={'subtitle2'}
                 >

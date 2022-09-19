@@ -25,7 +25,7 @@ export const ChartList: React.FC<ChartListProps> = (props) => {
                     <>
                         {
                             props.searchedBy !== 'null' &&
-                            <Typography variant={'subtitle1'} sx={{ marginTop: 2 }}>
+                            <Typography data-cy={'field__searched-by'} variant={'subtitle1'} sx={{ marginTop: 2 }}>
                                 {props.searchedBy !== null ? `Searched by: ${props.searchedBy}` : null}
                             </Typography>
                         }

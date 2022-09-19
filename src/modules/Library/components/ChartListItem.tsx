@@ -37,7 +37,7 @@ export const ChartlistItem: React.FC<ChartListItemProps> = (props) => {
                         />
                     } />
             </TableCell>
-            <TableCell align='center'>{props.item.statOwner}</TableCell>
+            <TableCell data-cy={'table__cell__stat-owner'} align='center'>{props.item.statOwner}</TableCell>
         </TableRow>
     )
 }

@@ -18,7 +18,7 @@ export const CommentForm = (props: Props) => {
 
     const { register, formState: { isDirty }, handleSubmit } = useForm({
         defaultValues: {
-            comment: commentToShow?.comment 
+            comment: commentToShow?.comment
         }
     })
 
@@ -40,6 +40,7 @@ export const CommentForm = (props: Props) => {
         >
             <form onSubmit={onSubmit}>
                 <TextField
+                    data-cy={'input__comment'}
                     sx={{
                         margin: 1
                     }}
@@ -50,6 +51,7 @@ export const CommentForm = (props: Props) => {
                     {...register('comment')}
                 />
                 <Button
+                    data-cy={'button__comment-submit'}
                     sx={{
                         margin: 1,
                         width: '100%'

@@ -31,17 +31,20 @@ export const ChartSearcher: React.FC<ChartSearcherProps> = (props) => {
                     }}
                 >
                     <TextField
+                        data-cy={'input__stat-search'}
                         label={'Search'}
                         variant={'standard'}
                         fullWidth
                         {...registerSearchInput}
                     />
                     <CheckBox
+                        data-cy={'checkbox__with-comments'}
                         label={'with comments'}
                         {...registerWithComments}
                     />
 
                     <Button
+                        data-cy={'button__stat-search-submit'}
                         variant={'contained'}
                         color={'primary'}
                         type={'submit'}
